@@ -41,7 +41,7 @@ export default function AdminCustomers() {
   }, [fetchCustomers]);
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-black text-gray-900">Customers</h1>
@@ -71,6 +71,7 @@ export default function AdminCustomers() {
             <p className="text-sm mt-1">Customers will appear here once they sign up</p>
           </div>
         ) : (
+          <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-100">
@@ -123,6 +124,7 @@ export default function AdminCustomers() {
               })}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>

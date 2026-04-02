@@ -128,7 +128,10 @@ export default function AdminSupportPage() {
   return (
     <div className="flex h-full bg-white overflow-hidden">
       {/* Sidebar — liste des conversations */}
-      <div className="w-80 flex-shrink-0 border-r border-gray-100 flex flex-col">
+      <div className={cn(
+        "w-full md:w-80 flex-shrink-0 border-r border-gray-100 flex flex-col",
+        selected ? "hidden md:flex" : "flex"
+      )}>
         <div className="p-4 border-b border-gray-100">
           <h1 className="text-lg font-black text-gray-900">Support</h1>
           <p className="text-xs text-gray-400 mt-0.5">{conversations.filter(c => c.status === "OPEN").length} conversation(s) ouverte(s)</p>
@@ -188,10 +191,16 @@ export default function AdminSupportPage() {
       {selected ? (
         <div className="flex-1 flex flex-col min-w-0">
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-            <div>
-              <p className="font-bold text-gray-900">{selected.clientName}</p>
-              <p className="text-xs text-gray-400">{selected.clientEmail} · {selected.subject}</p>
+          <div className="flex items-center justify-between px-4 md:px-6 py-4 border-b border-gray-100">
+            <div className="flex items-center gap-3 min-w-0">
+              <button onClick={() => setSelected(null)}
+                className="md:hidden text-gray-400 hover:text-gray-600 flex-shrink-0">
+                ←
+              </button>
+              <div className="min-w-0">
+                <p className="font-bold text-gray-900 truncate">{selected.clientName}</p>
+                <p className="text-xs text-gray-400 truncate">{selected.clientEmail} · {selected.subject}</p>
+              </div>
             </div>
             <div className="flex items-center gap-2">
               <button onClick={toggleStatus}

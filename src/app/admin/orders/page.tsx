@@ -84,7 +84,7 @@ export default function AdminOrders() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-black text-gray-900">Orders</h1>
@@ -124,6 +124,7 @@ export default function AdminOrders() {
             <p className="font-medium">No orders found</p>
           </div>
         ) : (
+          <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-100">
@@ -193,6 +194,7 @@ export default function AdminOrders() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>

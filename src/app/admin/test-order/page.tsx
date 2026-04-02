@@ -86,7 +86,7 @@ export default function TestOrderPage() {
   }, {});
 
   return (
-    <div className="p-8 max-w-4xl">
+    <div className="p-4 md:p-8 max-w-4xl">
       {/* Header */}
       <div className="flex items-center gap-3 mb-2">
         <div className="w-9 h-9 bg-purple-100 rounded-xl flex items-center justify-center">

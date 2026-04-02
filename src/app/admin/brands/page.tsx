@@ -101,7 +101,7 @@ export default function AdminBrands() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-black text-gray-900">Brands</h1>
@@ -126,6 +126,7 @@ export default function AdminBrands() {
             <p className="text-sm mt-1">Add your first brand to get started</p>
           </div>
         ) : (
+          <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-100">
@@ -190,6 +191,7 @@ export default function AdminBrands() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 

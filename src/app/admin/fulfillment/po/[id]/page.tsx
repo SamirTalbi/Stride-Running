@@ -89,7 +89,7 @@ export default function PODetailPage({ params }: { params: Promise<{ id: string 
   if (!po) return <div className="p-8 text-gray-500">PO introuvable.</div>;
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       {/* Header */}
       <div className="flex items-center gap-4 mb-6 print:hidden">
         <button onClick={() => router.back()} className="p-2 hover:bg-gray-100 rounded-xl text-gray-500">
@@ -174,6 +174,7 @@ export default function PODetailPage({ params }: { params: Promise<{ id: string 
         </div>
 
         {/* Table articles */}
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-gray-50 border-b border-gray-200">
@@ -234,6 +235,7 @@ export default function PODetailPage({ params }: { params: Promise<{ id: string 
             </tr>
           </tfoot>
         </table>
+        </div>
 
         {/* Notes */}
         {po.notes && (

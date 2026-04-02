@@ -231,7 +231,7 @@ export default function AdminProducts() {
   };
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
@@ -270,6 +270,7 @@ export default function AdminProducts() {
             <p className="text-sm mt-1">Add your first product to get started</p>
           </div>
         ) : (
+          <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-100">
@@ -335,6 +336,7 @@ export default function AdminProducts() {
               })}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 

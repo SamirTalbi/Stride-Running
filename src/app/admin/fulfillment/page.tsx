@@ -170,7 +170,7 @@ export default function FulfillmentPage() {
   const totalUnits = items.reduce((s, i) => s + i.quantity, 0);
 
   return (
-    <div className="p-8 min-h-full">
+    <div className="p-4 md:p-8 min-h-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
@@ -182,7 +182,7 @@ export default function FulfillmentPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-gray-200 mb-6 gap-1">
+      <div className="flex border-b border-gray-200 mb-6 gap-1 overflow-x-auto">
         {([
           { id: "today", label: "Commandes du jour", icon: Clock },
           { id: "pos", label: "Bons de commande", icon: FileText },
@@ -233,6 +233,7 @@ export default function FulfillmentPage() {
                       <RefreshCw size={15} />
                     </button>
                   </div>
+                  <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead className="bg-gray-50">
                       <tr>
@@ -294,6 +295,7 @@ export default function FulfillmentPage() {
                       </tr>
                     </tfoot>
                   </table>
+                  </div>
                 </div>
 
                 {/* Commandes individuelles */}
@@ -301,6 +303,7 @@ export default function FulfillmentPage() {
                   <div className="px-6 py-4 border-b border-gray-100">
                     <h2 className="font-bold text-gray-900">Détail des commandes ({orderCount})</h2>
                   </div>
+                  <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead className="bg-gray-50">
                       <tr>
@@ -340,6 +343,7 @@ export default function FulfillmentPage() {
                       ))}
                     </tbody>
                   </table>
+                  </div>
                 </div>
 
                 {/* CTA */}
@@ -366,6 +370,7 @@ export default function FulfillmentPage() {
               <p className="text-sm">Aucun bon de commande pour l&apos;instant.</p>
             </div>
           ) : (
+            <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-gray-50 border-b border-gray-100">
                 <tr>
@@ -415,6 +420,7 @@ export default function FulfillmentPage() {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </div>
       )}
@@ -437,6 +443,7 @@ export default function FulfillmentPage() {
               </div>
 
               <div className="bg-white rounded-2xl shadow-card overflow-hidden">
+                <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead className="bg-gray-50 border-b border-gray-100">
                     <tr>
@@ -477,6 +484,7 @@ export default function FulfillmentPage() {
                     ))}
                   </tbody>
                 </table>
+                </div>
               </div>
 
               <div className="flex items-center justify-between">

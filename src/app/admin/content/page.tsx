@@ -155,7 +155,7 @@ export default function ContentPage() {
   };
 
   return (
-    <div className="p-8 min-h-full">
+    <div className="p-4 md:p-8 min-h-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
@@ -205,6 +205,7 @@ export default function ContentPage() {
             <button onClick={openCreate} className="mt-3 text-brand-500 text-sm font-semibold hover:underline">Create your first post →</button>
           </div>
         ) : (
+          <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
@@ -259,6 +260,7 @@ export default function ContentPage() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 
