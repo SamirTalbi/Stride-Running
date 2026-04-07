@@ -14,10 +14,10 @@ interface SearchModalProps {
 }
 
 const trendingSearches = [
-  "Nike Pegasus", "Brooks Ghost", "HOKA Clifton", "Trail shoes", "Beginner running"
+  "Nike Pegasus", "Brooks Ghost", "HOKA Clifton", "Chaussures Trail", "Running débutant"
 ];
 
-const recentSearches = ["Asics Gel-Nimbus", "Women's trail", "Waterproof running jacket"];
+const recentSearches = ["Asics Gel-Nimbus", "Trail femme", "Veste de running imperméable"];
 
 // Mock search results for demo
 const mockResults = [
@@ -81,7 +81,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search shoes, brands, categories..."
+            placeholder="Rechercher des chaussures, marques, catégories..."
             className="flex-1 text-base text-gray-900 placeholder:text-gray-400 outline-none bg-transparent"
           />
           {query && (
@@ -96,7 +96,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             onClick={onClose}
             className="p-2 rounded-lg hover:bg-gray-100 text-gray-500 transition-colors text-sm font-medium"
           >
-            Cancel
+            Annuler
           </button>
         </div>
 
@@ -108,7 +108,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
               {recentSearches.length > 0 && (
                 <div>
                   <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-1.5">
-                    <Clock size={12} /> Recent
+                    <Clock size={12} /> Récent
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {recentSearches.map((s) => (
@@ -128,7 +128,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
               {/* Trending */}
               <div>
                 <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-1.5">
-                  <TrendingUp size={12} /> Trending
+                  <TrendingUp size={12} /> Tendances
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {trendingSearches.map((s) => (
@@ -159,8 +159,8 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
           ) : results.length === 0 ? (
             <div className="text-center py-8 text-gray-500">
               <Search size={32} className="mx-auto mb-3 text-gray-300" />
-              <p className="font-medium">No results for &ldquo;{query}&rdquo;</p>
-              <p className="text-sm mt-1">Try different keywords or browse categories</p>
+              <p className="font-medium">Aucun résultat pour &ldquo;{query}&rdquo;</p>
+              <p className="text-sm mt-1">Essayez d'autres mots-clés ou parcourez les catégories</p>
             </div>
           ) : (
             <div className="space-y-2">
@@ -200,7 +200,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                   "border border-brand-200 rounded-xl hover:border-brand-400 transition-colors"
                 )}
               >
-                See all results for &ldquo;{query}&rdquo; <ArrowRight size={14} />
+                Voir tous les résultats pour &ldquo;{query}&rdquo; <ArrowRight size={14} />
               </Link>
             </div>
           )}

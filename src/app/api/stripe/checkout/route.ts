@@ -68,7 +68,6 @@ export async function POST(req: NextRequest) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
-    console.error("[Stripe Checkout]", error);
     return NextResponse.json({ error: "Failed to create checkout session" }, { status: 500 });
   }
 }

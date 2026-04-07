@@ -18,40 +18,40 @@ interface MegaMenuProps {
 }
 
 const featuredContent: Record<string, { title: string; href: string; image: string; cta: string }[]> = {
-  Men: [
+  Homme: [
     {
-      title: "Best Sellers",
+      title: "Meilleures ventes",
       href: "/men?sort=best-sellers",
       image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=400&fit=crop",
-      cta: "Shop now",
+      cta: "Acheter",
     },
     {
-      title: "New Arrivals",
+      title: "Nouveautés",
       href: "/men?filter=new",
       image: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=300&h=400&fit=crop",
-      cta: "Explore",
+      cta: "Explorer",
     },
   ],
-  Women: [
+  Femme: [
     {
-      title: "Best Sellers",
+      title: "Meilleures ventes",
       href: "/women?sort=best-sellers",
       image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=300&h=400&fit=crop",
-      cta: "Shop now",
+      cta: "Acheter",
     },
     {
-      title: "New Arrivals",
+      title: "Nouveautés",
       href: "/women?filter=new",
       image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=300&h=400&fit=crop",
-      cta: "Explore",
+      cta: "Explorer",
     },
   ],
-  Apparel: [
+  Vêtements: [
     {
-      title: "Summer Collection",
+      title: "Collection d'été",
       href: "/apparel?season=summer",
       image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=400&fit=crop",
-      cta: "Shop now",
+      cta: "Acheter",
     },
   ],
 };
@@ -108,30 +108,35 @@ export function MegaMenu({ activeItem, items, onClose }: MegaMenuProps) {
             {/* Quick links */}
             <div>
               <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">
-                Quick Links
+                Liens Rapides
               </p>
-              {[
-                { label: "Best Sellers", href: `${activeNav.href}?sort=best-sellers` },
-                { label: "New Arrivals", href: `${activeNav.href}?filter=new` },
-                { label: "On Sale", href: `${activeNav.href}?filter=sale` },
-                { label: "Under $100", href: `${activeNav.href}?price=under-100` },
-                { label: "Toutes les marques", href: "/brands" },
-              ].map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={onClose}
-                  className="flex items-center gap-2 py-2 text-sm text-gray-700 hover:text-brand-500
+              {(activeItem === "Homme"
+                ? [
+                  { label: "Meilleures ventes", href: `${activeNav.href}?sort=best-sellers` },
+                  { label: "Nouveautés", href: `${activeNav.href}?filter=new` },
+                ]
+                : [
+                  { label: "Meilleures ventes", href: `${activeNav.href}?sort=best-sellers` },
+                  { label: "Nouveautés", href: `${activeNav.href}?filter=new` },
+                  // { label: "En solde", href: `${activeNav.href}?filter=sale` },
+                  // { label: "Moins de 100€", href: `${activeNav.href}?price=under-100` },
+                  // { label: "Toutes les marques", href: "/brands" },
+                ]).map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={onClose}
+                    className="flex items-center gap-2 py-2 text-sm text-gray-700 hover:text-brand-500
                              group transition-colors duration-150"
-                >
-                  <ArrowRight
-                    size={14}
-                    className="text-brand-400 opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0
+                  >
+                    <ArrowRight
+                      size={14}
+                      className="text-brand-400 opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0
                                transition-all duration-150"
-                  />
-                  {link.label}
-                </Link>
-              ))}
+                    />
+                    {link.label}
+                  </Link>
+                ))}
             </div>
           </div>
 
@@ -175,7 +180,7 @@ export function MegaMenu({ activeItem, items, onClose }: MegaMenuProps) {
             className="text-sm font-semibold text-brand-500 hover:text-brand-600 flex items-center gap-1.5
                        transition-colors duration-150"
           >
-            Find My Perfect Shoe <ArrowRight size={14} />
+            Trouver ma chaussure idéale <ArrowRight size={14} />
           </Link>
           <Link
             href="/blog"
@@ -190,7 +195,7 @@ export function MegaMenu({ activeItem, items, onClose }: MegaMenuProps) {
             className="text-sm font-semibold text-red-500 hover:text-red-600 flex items-center gap-1
                        transition-colors duration-150"
           >
-            Sale — Up to 50% off
+            Soldes — Jusqu'à -50%
           </Link>
         </div>
       </div>

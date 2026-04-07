@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
     orderBy: [{ isBestSeller: "desc" }, { reviewCount: "desc" }],
     take: 3,
     include: {
-      brand: { select: { name: true } },
+      brand: { select: { id: true, name: true, slug: true } },
       images: { orderBy: { sortOrder: "asc" }, take: 1 },
       variants: { where: { isActive: true, stock: { gt: 0 } }, orderBy: { price: "asc" }, take: 1 },
     },

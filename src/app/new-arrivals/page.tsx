@@ -38,8 +38,14 @@ export default async function NewArrivalsPage() {
           <p className="text-gray-400 mt-2">Les dernières chaussures de running et équipements, tout juste arrivés.</p>
         </div>
       </div>
-      {/* @ts-expect-error Prisma type vs Product type */}
-      <ProductGrid products={products} showFilters />
+      <ProductGrid
+        products={products as unknown as any[]}
+        showFilters
+        hidePriceFilter
+        hideSizeFilter
+        hideBrandFilter
+        hideColorFilter
+      />
     </>
   );
 }

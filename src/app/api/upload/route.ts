@@ -40,7 +40,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ url: `/api/media/${media.id}`, publicId: media.id });
   } catch (error) {
-    console.error("[Upload API]", error);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 }

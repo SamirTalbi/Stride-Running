@@ -26,11 +26,11 @@ export async function BestSellers() {
       <div className="max-w-[1440px] mx-auto px-4 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
-            <p className="text-sm font-semibold text-brand-500 uppercase tracking-widest mb-2">Most Popular</p>
-            <h2 className="font-display font-black text-display-md text-gray-900">Best Sellers</h2>
+            <p className="text-sm font-semibold text-brand-500 uppercase tracking-widest mb-2">Les Plus Populaires</p>
+            <h2 className="font-display font-black text-display-md text-gray-900">Meilleures Ventes</h2>
           </div>
           <Link href="/best-sellers" className="flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-brand-500 transition-colors self-start sm:self-auto">
-            View all <ArrowRight size={14} />
+            Voir tout <ArrowRight size={14} />
           </Link>
         </div>
         {/* @ts-expect-error Prisma type vs Product type */}

@@ -10,9 +10,9 @@ import { BrandsStrip } from "@/components/home/BrandsStrip";
 import { Newsletter } from "@/components/home/Newsletter";
 
 export const metadata: Metadata = {
-  title: "Stride Running | #1 Running Shoes & Gear Online Store",
+  title: "Stride Running | #1 Boutique de Chaussures & Équipement de Running En Ligne",
   description:
-    "Shop 1000+ running shoes from Nike, Brooks, HOKA, Asics & more. Free shipping $75+, expert advice, 30-day returns. Find your perfect running shoe today.",
+    "Plus de 1000 modèles de Nike, Brooks, HOKA, Asics & plus. Livraison gratuite 75€+, conseils d'experts, retours sous 30 jours. Trouvez votre chaussure idéale aujourd'hui.",
   alternates: { canonical: "/" },
 };
 

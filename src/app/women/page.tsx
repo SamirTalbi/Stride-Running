@@ -38,8 +38,14 @@ export default async function WomenPage() {
           </p>
         </div>
       </div>
-      {/* @ts-expect-error Prisma type vs Product type */}
-      <ProductGrid products={products} showFilters />
+      <ProductGrid
+        products={products as unknown as any[]}
+        showFilters
+        hidePriceFilter
+        hideSizeFilter
+        hideBrandFilter
+        hideColorFilter
+      />
     </>
   );
 }

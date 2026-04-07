@@ -4,17 +4,17 @@ import { useState } from "react";
 import { ProductCard } from "@/components/product/ProductCard";
 import type { Product } from "@/types";
 
-const tabs = ["All", "Men's", "Women's", "Trail", "New Arrivals"];
+const tabs = ["Tous", "Homme", "Femme", "Trail", "Nouveautés"];
 
 export default function BestSellersTabs({ products }: { products: Product[] }) {
-  const [activeTab, setActiveTab] = useState("All");
+  const [activeTab, setActiveTab] = useState("Tous");
 
   const filtered = products.filter((p) => {
-    if (activeTab === "All") return true;
-    if (activeTab === "Men's") return p.gender === "MEN";
-    if (activeTab === "Women's") return p.gender === "WOMEN";
+    if (activeTab === "Tous") return true;
+    if (activeTab === "Homme") return p.gender === "MEN";
+    if (activeTab === "Femme") return p.gender === "WOMEN";
     if (activeTab === "Trail") return p.terrain === "TRAIL";
-    if (activeTab === "New Arrivals") return p.isNewArrival;
+    if (activeTab === "Nouveautés") return p.isNewArrival;
     return true;
   });
 
@@ -38,7 +38,7 @@ export default function BestSellersTabs({ products }: { products: Product[] }) {
 
       {filtered.length === 0 ? (
         <div className="text-center py-12 text-gray-400">
-          <p>No products in this category yet.</p>
+          <p>Aucun produit dans cette catégorie pour le moment.</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">

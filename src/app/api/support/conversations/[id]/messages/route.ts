@@ -30,7 +30,6 @@ export async function GET(
 
     return NextResponse.json(conversation);
   } catch (error) {
-    console.error("[Messages GET]", error);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }
@@ -69,7 +68,6 @@ export async function POST(
 
     return NextResponse.json(message, { status: 201 });
   } catch (error) {
-    console.error("[Messages POST]", error);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }

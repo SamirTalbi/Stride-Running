@@ -37,6 +37,13 @@ export function ProductDetails({ product }: ProductDetailsProps) {
   const { savedSize } = useSavedSize();
   const isWishlisted = hasItem(product.id);
 
+  const CUSHION_FR: Record<string, string> = {
+    LOW: "Faible",
+    MEDIUM: "Moyen",
+    HIGH: "Élevé",
+    MAX: "Maximum",
+  };
+
   // Get unique colors
   const colors = product.variants.filter(
     (v, i, arr) => arr.findIndex((x) => x.color === v.color) === i
@@ -91,8 +98,8 @@ export function ProductDetails({ product }: ProductDetailsProps) {
               {product.brand.name}
             </Link>
           )}
-          {product.isNewArrival && <Badge variant="brand">New Arrival</Badge>}
-          {product.isBestSeller && <Badge variant="default" className="bg-amber-100 text-amber-700">Best Seller</Badge>}
+          {product.isNewArrival && <Badge variant="brand">Nouveau</Badge>}
+          {product.isBestSeller && <Badge variant="default" className="bg-amber-100 text-amber-700">Meilleure vente</Badge>}
         </div>
         <button
           onClick={() => navigator.share?.({ title: product.name, url: window.location.href })}
@@ -115,7 +122,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
             href="#reviews"
             className="text-sm text-brand-500 hover:text-brand-600 font-medium transition-colors"
           >
-            Read reviews
+            Lire les avis
           </Link>
         </div>
       )}
@@ -126,7 +133,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
         {comparePrice && (
           <>
             <span className="text-xl text-gray-400 line-through">{formatPrice(comparePrice)}</span>
-            <Badge variant="error">Save {discount}%</Badge>
+            <Badge variant="error">Économisez {discount}%</Badge>
           </>
         )}
       </div>
@@ -135,9 +142,9 @@ export function ProductDetails({ product }: ProductDetailsProps) {
       <div className="flex flex-wrap gap-2">
         {[
           product.terrain && `${product.terrain.charAt(0) + product.terrain.slice(1).toLowerCase()} Running`,
-          product.drop !== undefined && `${product.drop}mm drop`,
+          product.drop !== undefined && `Drop ${product.drop}mm`,
           product.weight && `${product.weight}g`,
-          product.cushionLevel && `${product.cushionLevel.charAt(0) + product.cushionLevel.slice(1).toLowerCase()} cushion`,
+          product.cushionLevel && `Amorti ${CUSHION_FR[product.cushionLevel] ?? product.cushionLevel}`,
         ].filter(Boolean).map((spec) => (
           <span
             key={String(spec)}
@@ -152,7 +159,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
       {colors.length > 1 && (
         <div>
           <p className="text-sm font-semibold text-gray-700 mb-2.5">
-            Color: <span className="font-normal text-gray-500">{selectedColor}</span>
+            Couleur : <span className="font-normal text-gray-500">{selectedColor}</span>
           </p>
           <div className="flex flex-wrap gap-2">
             {colors.map((variant) => (
@@ -296,7 +303,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
       {lowStock && selectedVariant && (
         <div className="flex items-center gap-2 text-sm text-amber-600 font-medium animate-fade-in">
           <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse-soft" />
-          Only {selectedVariant.stock} left in stock — order soon!
+          Plus que {selectedVariant.stock} en stock — commandez vite !
         </div>
       )}
 
@@ -311,7 +318,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
           leftIcon={<ShoppingBag size={18} />}
           className="flex-1"
         >
-          {addingToCart ? "Adding..." : "Add to Cart"}
+          {addingToCart ? "Ajout..." : "Ajouter au panier"}
         </Button>
 
         <button
@@ -336,15 +343,15 @@ export function ProductDetails({ product }: ProductDetailsProps) {
         onClick={handleBuyNow}
         rightIcon={<Zap size={16} className="fill-current" />}
       >
-        Buy Now
+        Acheter maintenant
       </Button>
 
       {/* Trust section */}
       <div className="grid grid-cols-3 gap-3 pt-2">
         {[
-          { icon: Truck, title: "Free Shipping", desc: "Orders $75+", color: "text-brand-500" },
-          { icon: RotateCcw, title: "30-Day Returns", desc: "Easy & free", color: "text-blue-500" },
-          { icon: Shield, title: "Secure Pay", desc: "Encrypted", color: "text-green-500" },
+          { icon: Truck, title: "Livraison Gratuite", desc: "Dès 75€ d'achat", color: "text-brand-500" },
+          { icon: RotateCcw, title: "Retours 30 jours", desc: "Gratuit & facile", color: "text-blue-500" },
+          { icon: Shield, title: "Paiement Sécurisé", desc: "Transactions chiffrées", color: "text-green-500" },
         ].map(({ icon: Icon, title, desc, color }) => (
           <div key={title} className="flex flex-col items-center text-center p-3 bg-gray-50 rounded-xl">
             <Icon size={18} className={color} />
@@ -356,7 +363,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 
       {/* Payment methods */}
       <div className="flex items-center gap-2 flex-wrap">
-        <span className="text-xs text-gray-400">Accept:</span>
+        <span className="text-xs text-gray-400">Nous acceptons :</span>
         {["Visa", "Mastercard", "Amex", "PayPal", "Apple Pay"].map((p) => (
           <span
             key={p}
@@ -370,7 +377,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
       {/* Features */}
       {product.features.length > 0 && (
         <div className="pt-2 border-t border-gray-100">
-          <p className="text-sm font-bold text-gray-800 mb-3">Key Features</p>
+          <p className="text-sm font-bold text-gray-800 mb-3">Points clés</p>
           <ul className="space-y-2">
             {product.features.map((feature) => (
               <li key={feature} className="flex items-center gap-2 text-sm text-gray-600">

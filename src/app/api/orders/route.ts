@@ -147,7 +147,7 @@ export async function POST(req: NextRequest) {
         shippingAddress: data.shippingAddress,
       });
     } catch (emailError) {
-      console.error("[Order confirmation email]", emailError);
+      
       // Ne pas bloquer la réponse si l'email échoue
     }
 
@@ -156,7 +156,7 @@ export async function POST(req: NextRequest) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: "Invalid data", details: error.issues }, { status: 400 });
     }
-    console.error("[Orders API]", error);
+    
     return NextResponse.json({ error: "Failed to create order" }, { status: 500 });
   }
 }
@@ -197,7 +197,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ error: "Missing userId, email or orderNumber" }, { status: 400 });
   } catch (error) {
-    console.error("[Orders GET API]", error);
+    
     return NextResponse.json({ error: "Failed to fetch orders" }, { status: 500 });
   }
 }

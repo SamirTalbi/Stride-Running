@@ -6,13 +6,13 @@ import Link from "next/link";
 import { Plus, Sparkles } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import { useCartStore } from "@/store/cartStore";
-import type { CartItem } from "@/types";
+import type { CartItem, Product } from "@/types";
 
 interface Suggestion {
   id: string;
   name: string;
   slug: string;
-  brand?: { name: string } | null;
+  brand?: { id: string; name: string; slug: string } | null;
   images: { url: string; altText?: string | null }[];
   variants: { id: string; size: string; color: string; colorHex?: string | null; price: number; comparePrice?: number | null; stock: number; isActive: boolean }[];
 }
@@ -80,7 +80,7 @@ export function CartUpsell({ cartItems }: { cartItems: CartItem[] }) {
       createdAt: "",
     };
 
-    addItem(product, variant);
+    addItem(product as Product, variant as any);
     setAddedId(suggestion.id);
     setTimeout(() => setAddedId(null), 1500);
   };

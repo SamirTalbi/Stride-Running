@@ -49,7 +49,7 @@ export function CartDrawer() {
           <div className="flex items-center gap-2">
             <ShoppingBag size={20} className="text-gray-700" />
             <h2 className="text-base font-bold text-gray-900">
-              Your Cart
+              Votre Panier
             </h2>
             {itemCount > 0 && (
               <span className="w-5 h-5 bg-brand-500 text-white text-xs font-bold rounded-full
@@ -74,10 +74,10 @@ export function CartDrawer() {
                 <Truck size={13} />
                 {freeShippingProgress < 100 ? (
                   <span>
-                    Add <span className="font-bold">{formatPrice(freeShippingThreshold - subtotal)}</span> for free shipping
+                    Ajoutez <span className="font-bold">{formatPrice(freeShippingThreshold - subtotal)}</span> pour la livraison gratuite
                   </span>
                 ) : (
-                  <span className="font-bold text-green-600">You qualify for free shipping!</span>
+                  <span className="font-bold text-green-600">Livraison gratuite offerte !</span>
                 )}
               </div>
             </div>
@@ -97,12 +97,12 @@ export function CartDrawer() {
               <div className="w-20 h-20 bg-gray-100 rounded-2xl flex items-center justify-center mb-4">
                 <ShoppingBag size={32} className="text-gray-300" />
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Your cart is empty</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Votre panier est vide</h3>
               <p className="text-sm text-gray-500 mb-6">
-                Add some running gear to get started!
+                Ajoutez des articles pour commencer !
               </p>
               <Button onClick={closeCart} variant="primary" size="md">
-                Start Shopping
+                Continuer mes achats
               </Button>
             </div>
           ) : (
@@ -194,7 +194,7 @@ export function CartDrawer() {
                           </p>
                           {item.quantity > 1 && (
                             <p className="text-[10px] text-gray-400">
-                              {formatPrice(item.variant.price)} each
+                            {formatPrice(item.variant.price)} l'unité
                             </p>
                           )}
                         </div>
@@ -215,13 +215,13 @@ export function CartDrawer() {
             {/* Summary */}
             <div className="space-y-1.5">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Subtotal ({itemCount} items)</span>
+                <span className="text-gray-500">Sous-total ({itemCount} articles)</span>
                 <span className="font-semibold text-gray-900">{formatPrice(subtotal)}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Shipping</span>
+                <span className="text-gray-500">Livraison</span>
                 <span className={cn("font-medium", subtotal >= freeShippingThreshold ? "text-green-600" : "text-gray-700")}>
-                  {subtotal >= freeShippingThreshold ? "FREE" : "Calculated at checkout"}
+                  {subtotal >= freeShippingThreshold ? "GRATUIT" : "Calculé à l'étape suivante"}
                 </span>
               </div>
             </div>
@@ -229,8 +229,8 @@ export function CartDrawer() {
             {/* Trust */}
             <div className="flex items-center justify-center gap-4 py-2">
               {[
-                { icon: Shield, text: "Secure payment" },
-                { icon: Truck, text: "Fast shipping" },
+                { icon: Shield, text: "Paiement sécurisé" },
+                { icon: Truck, text: "Livraison rapide" },
               ].map(({ icon: Icon, text }) => (
                 <div key={text} className="flex items-center gap-1 text-[11px] text-gray-400">
                   <Icon size={12} className="text-green-500" />
@@ -243,12 +243,12 @@ export function CartDrawer() {
             <div className="space-y-2">
               <Link href="/checkout" onClick={closeCart}>
                 <Button variant="primary" size="lg" fullWidth rightIcon={<ArrowRight size={16} />}>
-                  Checkout — {formatPrice(subtotal)}
+                  Passer la commande — {formatPrice(subtotal)}
                 </Button>
               </Link>
               <Link href="/cart" onClick={closeCart}>
                 <Button variant="ghost" size="md" fullWidth>
-                  View Full Cart
+                  Voir le panier complet
                 </Button>
               </Link>
             </div>

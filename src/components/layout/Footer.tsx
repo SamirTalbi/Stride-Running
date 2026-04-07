@@ -5,7 +5,7 @@ const footerLinks = {
   Boutique: [
     { label: "Chaussures Homme", href: "/men" },
     { label: "Chaussures Femme", href: "/women" },
-    { label: "Trail Running", href: "/shoes" },
+    { label: "Trail", href: "/shoes" },
     { label: "Vêtements", href: "/apparel" },
     { label: "Accessoires", href: "/accessories" },
     { label: "Nouveautés", href: "/new-arrivals" },
@@ -23,7 +23,7 @@ const footerLinks = {
     { label: "Saucony", href: "/brands/saucony" },
   ],
   Aide: [
-    { label: "Trouver ma chaussure", href: "/find-my-shoe" },
+    { label: "Trouver ma chaussure idéale", href: "/find-my-shoe" },
     { label: "Livraison & Retours", href: "/shipping-returns" },
     { label: "Suivi de commande", href: "/account" },
     { label: "FAQ", href: "/faq" },
@@ -31,7 +31,7 @@ const footerLinks = {
   ],
   "À propos": [
     { label: "Notre histoire", href: "/about" },
-    { label: "Blog Running", href: "/blog" },
+    { label: "Conseils Running", href: "/blog" },
   ],
 };
 
@@ -39,15 +39,22 @@ export function Footer() {
   return (
     <footer className="bg-dark-DEFAULT text-white">
       {/* Main footer */}
-      <div className="max-w-[1440px] mx-auto px-4 lg:px-8 pt-16 pb-10">
+      <div className="max-w-[1440px] mx-auto px-1 lg:px-2 pt-16 pb-10">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Brand */}
           <div className="col-span-2 md:col-span-3 lg:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-5">
-              <div className="w-9 h-9 bg-brand-500 rounded-xl flex items-center justify-center">
+              <div className="w-9 h-9 bg-brand-500 rounded-xl flex items-center justify-center shadow-sm">
                 <Zap size={20} className="text-white fill-white" />
               </div>
-              <span className="font-display font-black text-xl tracking-tight">STRIDE</span>
+              <div className="flex flex-col leading-[1.1] pt-0.5">
+                <span className="font-display font-black text-2xl text-brand-500 tracking-tight">
+                  Stride
+                </span>
+                <span className="font-display font-black text-xl text-black tracking-tight italic ml-0 -mt-2">
+                  Running
+                </span>
+              </div>
             </Link>
             <p className="text-sm text-gray-400 leading-relaxed mb-6 max-w-xs">
               Équipement running premium pour chaque coureur. Du premier 5K jusqu&apos;à la ligne d&apos;arrivée du marathon.
@@ -114,7 +121,7 @@ export function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-dark-100">
-        <div className="max-w-[1440px] mx-auto px-4 lg:px-8 py-6">
+        <div className="max-w-[1440px] mx-auto px-1 lg:px-2 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-gray-500">
               © {new Date().getFullYear()} Stride Running. Tous droits réservés.
