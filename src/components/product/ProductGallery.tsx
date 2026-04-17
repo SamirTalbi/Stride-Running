@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, ZoomIn, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -9,14 +9,28 @@ import type { ProductImage } from "@/types";
 interface ProductGalleryProps {
   images: ProductImage[];
   productName: string;
+  activeColor?: string;
 }
 
-export function ProductGallery({ images, productName }: ProductGalleryProps) {
+export function ProductGallery({ images, productName, activeColor }: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [lightbox, setLightbox] = useState(false);
   const [zoom, setZoom] = useState(false);
 
-  const sorted = [...images].sort((a, b) => a.sortOrder - b.sortOrder);
+  // Filter by color: show images tagged with activeColor OR images with no color tag (shared)
+  const all = [...images].sort((a, b) => a.sortOrder - b.sortOrder);
+  const hasColoredImages = all.some((img) => (img as ProductImage & { color?: string }).color);
+  const sorted = hasColoredImages && activeColor
+    ? all.filter((img) => {
+        const c = (img as ProductImage & { color?: string }).color;
+        return !c || c === activeColor;
+      })
+    : all;
+
+  // Reset to first image when color changes
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [activeColor]);
   const active = sorted[activeIndex];
 
   const prev = () => setActiveIndex((i) => (i - 1 + sorted.length) % sorted.length);

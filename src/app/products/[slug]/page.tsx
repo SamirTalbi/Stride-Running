@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { ProductGallery } from "@/components/product/ProductGallery";
-import { ProductDetails } from "@/components/product/ProductDetails";
+import { ProductView } from "@/components/product/ProductView";
 import { BestSellers } from "@/components/home/BestSellers";
 import { prisma } from "@/lib/prisma";
 
@@ -104,17 +103,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         </nav>
 
         {/* Layout produit */}
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 mb-16">
-          {/* Galerie */}
-          {/* @ts-expect-error Prisma null vs undefined */}
-          <ProductGallery images={product.images} productName={product.name} />
-
-          {/* Détails */}
-          <div className="lg:sticky lg:top-24 lg:self-start">
-            {/* @ts-expect-error Prisma null vs undefined */}
-            <ProductDetails product={product} />
-          </div>
-        </div>
+        {/* @ts-expect-error Prisma null vs undefined */}
+        <ProductView product={product} />
 
         {/* Onglets info produit */}
         <ProductInfoTabs product={product} />

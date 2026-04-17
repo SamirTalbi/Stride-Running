@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Plus, Search, Edit2, Trash2, X, Save, Loader2, Upload, Star, Grip } from "lucide-react";
+import { Plus, Search, Edit2, Trash2, X, Save, Loader2, Upload, Star } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
 
-type ProductImage = { url: string; isPrimary: boolean; sortOrder: number };
+type ProductImage = { url: string; isPrimary: boolean; sortOrder: number; color?: string };
 
 type Product = {
   id: string;
@@ -25,6 +25,29 @@ type Product = {
   categories: { category: { name: string } }[];
 };
 
+type VariantRow = {
+  size: string;
+  color: string;
+  price: string;
+  stock: string;
+};
+
+const COLORS = [
+  { name: "Black",  hex: "#111111" },
+  { name: "White",  hex: "#ffffff" },
+  { name: "Gray",   hex: "#9ca3af" },
+  { name: "Navy",   hex: "#1e3a5f" },
+  { name: "Blue",   hex: "#3b82f6" },
+  { name: "Red",    hex: "#ef4444" },
+  { name: "Orange", hex: "#f97316" },
+  { name: "Green",  hex: "#22c55e" },
+  { name: "Yellow", hex: "#eab308" },
+  { name: "Pink",   hex: "#ec4899" },
+  { name: "Purple", hex: "#a855f7" },
+  { name: "Brown",  hex: "#92400e" },
+  { name: "Beige",  hex: "#d4b896" },
+];
+
 const emptyForm = {
   name: "",
   sku: "",
@@ -39,11 +62,9 @@ const emptyForm = {
   isNewArrival: false,
   isBestSeller: false,
   isActive: true,
-  variantPrice: "",
-  variantStock: "",
-  variantSize: "",
-  variantColor: "",
 };
+
+const emptyVariant: VariantRow = { size: "", color: "", price: "", stock: "" };
 
 export default function AdminProducts() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -60,6 +81,8 @@ export default function AdminProducts() {
   const [brands, setBrands] = useState<{ id: string; name: string }[]>([]);
   const [categories, setCategories] = useState<{ id: string; name: string; parent: { name: string } | null }[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [variants, setVariants] = useState<VariantRow[]>([]);
+  const [newVariant, setNewVariant] = useState<VariantRow>(emptyVariant);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -88,6 +111,8 @@ export default function AdminProducts() {
     setForm(emptyForm);
     setImages([]);
     setSelectedCategories([]);
+    setVariants([]);
+    setNewVariant(emptyVariant);
     setEditingId(null);
     setShowForm(true);
   }
@@ -110,18 +135,24 @@ export default function AdminProducts() {
       isNewArrival: p.isNewArrival ?? false,
       isBestSeller: p.isBestSeller ?? false,
       isActive: p.isActive ?? true,
-      variantPrice: p.variants?.[0]?.price?.toString() ?? "",
-      variantStock: p.variants?.[0]?.stock?.toString() ?? "",
-      variantSize: p.variants?.[0]?.size ?? "",
-      variantColor: p.variants?.[0]?.color ?? "",
     });
     setImages(
-      (p.images ?? []).map((img: { url: string; isPrimary: boolean }, i: number) => ({
+      (p.images ?? []).map((img: { url: string; isPrimary: boolean; color?: string }, i: number) => ({
         url: img.url,
         isPrimary: img.isPrimary,
         sortOrder: i,
+        color: img.color ?? undefined,
       }))
     );
+    setVariants(
+      (p.variants ?? []).map((v: { size?: string; color?: string; price: number; stock: number }) => ({
+        size: v.size ?? "",
+        color: v.color ?? "",
+        price: v.price?.toString() ?? "",
+        stock: v.stock?.toString() ?? "",
+      }))
+    );
+    setNewVariant(emptyVariant);
     setSelectedCategories((p.categories ?? []).map((pc: { categoryId: string }) => pc.categoryId));
     setEditingId(product.id);
     setShowForm(true);
@@ -137,15 +168,12 @@ export default function AdminProducts() {
 
   async function handleFileUpload(files: FileList | null) {
     if (!files || files.length === 0) return;
-
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const idx = images.length + i;
       setUploadingIdx(idx);
-
       const formData = new FormData();
       formData.append("file", file);
-
       try {
         const res = await fetch("/api/upload", { method: "POST", body: formData });
         const json = await res.json();
@@ -170,11 +198,23 @@ export default function AdminProducts() {
   function removeImage(idx: number) {
     setImages((prev) => {
       const next = prev.filter((_, i) => i !== idx).map((img, i) => ({ ...img, sortOrder: i }));
-      if (next.length > 0 && !next.some((img) => img.isPrimary)) {
-        next[0].isPrimary = true;
-      }
+      if (next.length > 0 && !next.some((img) => img.isPrimary)) next[0].isPrimary = true;
       return next;
     });
+  }
+
+  function addVariant() {
+    if (!newVariant.price) return;
+    setVariants((prev) => [...prev, { ...newVariant }]);
+    setNewVariant(emptyVariant);
+  }
+
+  function removeVariant(idx: number) {
+    setVariants((prev) => prev.filter((_, i) => i !== idx));
+  }
+
+  function colorHex(name: string) {
+    return COLORS.find((c) => c.name === name)?.hex ?? "#9ca3af";
   }
 
   async function handleSave() {
@@ -196,15 +236,13 @@ export default function AdminProducts() {
         isActive: form.isActive,
         images,
         categoryIds: selectedCategories,
-        variants: form.variantPrice
-          ? [{
-              size: form.variantSize || "ONE SIZE",
-              color: form.variantColor || "Default",
-              price: parseFloat(form.variantPrice),
-              stock: parseInt(form.variantStock) || 0,
-              isActive: true,
-            }]
-          : [],
+        variants: variants.map((v) => ({
+          size: v.size || "ONE SIZE",
+          color: v.color || "Default",
+          price: parseFloat(v.price) || 0,
+          stock: parseInt(v.stock) || 0,
+          isActive: true,
+        })),
       };
 
       const url = editingId ? `/api/admin/products/${editingId}` : "/api/admin/products";
@@ -271,71 +309,71 @@ export default function AdminProducts() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-100">
-                <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Product</th>
-                <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell">SKU</th>
-                <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Price</th>
-                <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Stock</th>
-                <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-5 py-3.5" />
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {products.map((product) => {
-                const price = product.variants.length > 0 ? Math.min(...product.variants.map((v) => v.price)) : 0;
-                const stock = product.variants.reduce((s, v) => s + v.stock, 0);
-                const status = !product.isActive ? "Inactive" : stock === 0 ? "Out of Stock" : stock <= 10 ? "Low Stock" : "Active";
-                const image = product.images.find((i) => i.isPrimary)?.url ?? product.images[0]?.url;
-                return (
-                  <tr key={product.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-5 py-3.5">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                          {image ? (
-                            <Image src={image} alt={product.name} width={40} height={40} className="w-full h-full object-cover" />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center text-gray-300 text-xs">No img</div>
-                          )}
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-100">
+                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Product</th>
+                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell">SKU</th>
+                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Price</th>
+                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Stock</th>
+                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                  <th className="px-5 py-3.5" />
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {products.map((product) => {
+                  const price = product.variants.length > 0 ? Math.min(...product.variants.map((v) => v.price)) : 0;
+                  const stock = product.variants.reduce((s, v) => s + v.stock, 0);
+                  const status = !product.isActive ? "Inactive" : stock === 0 ? "Out of Stock" : stock <= 10 ? "Low Stock" : "Active";
+                  const image = product.images.find((i) => i.isPrimary)?.url ?? product.images[0]?.url;
+                  return (
+                    <tr key={product.id} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-5 py-3.5">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                            {image ? (
+                              <Image src={image} alt={product.name} width={40} height={40} className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-gray-300 text-xs">No img</div>
+                            )}
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-gray-900">{product.name}</p>
+                            <p className="text-xs text-gray-400">{product.brand?.name ?? "—"} · {product.gender}</p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="text-sm font-semibold text-gray-900">{product.name}</p>
-                          <p className="text-xs text-gray-400">{product.brand?.name ?? "—"} · {product.gender}</p>
+                      </td>
+                      <td className="px-5 py-3.5 hidden md:table-cell">
+                        <span className="text-xs font-mono text-gray-500 bg-gray-100 px-2 py-1 rounded">{product.sku}</span>
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <span className="text-sm font-bold text-gray-900">{price > 0 ? formatPrice(price) : "—"}</span>
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <span className={`text-sm font-semibold ${stock === 0 ? "text-red-500" : stock <= 10 ? "text-amber-600" : "text-gray-900"}`}>
+                          {stock}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${statusColors[status] ?? "bg-amber-100 text-amber-700"}`}>
+                          {status}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <div className="flex items-center gap-1">
+                          <button onClick={() => openEdit(product)} className="p-1.5 rounded-lg text-gray-400 hover:text-brand-500 hover:bg-brand-50 transition-colors">
+                            <Edit2 size={14} />
+                          </button>
+                          <button onClick={() => setDeleteId(product.id)} className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors">
+                            <Trash2 size={14} />
+                          </button>
                         </div>
-                      </div>
-                    </td>
-                    <td className="px-5 py-3.5 hidden md:table-cell">
-                      <span className="text-xs font-mono text-gray-500 bg-gray-100 px-2 py-1 rounded">{product.sku}</span>
-                    </td>
-                    <td className="px-5 py-3.5">
-                      <span className="text-sm font-bold text-gray-900">{price > 0 ? formatPrice(price) : "—"}</span>
-                    </td>
-                    <td className="px-5 py-3.5">
-                      <span className={`text-sm font-semibold ${stock === 0 ? "text-red-500" : stock <= 10 ? "text-amber-600" : "text-gray-900"}`}>
-                        {stock}
-                      </span>
-                    </td>
-                    <td className="px-5 py-3.5">
-                      <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${statusColors[status] ?? "bg-amber-100 text-amber-700"}`}>
-                        {status}
-                      </span>
-                    </td>
-                    <td className="px-5 py-3.5">
-                      <div className="flex items-center gap-1">
-                        <button onClick={() => openEdit(product)} className="p-1.5 rounded-lg text-gray-400 hover:text-brand-500 hover:bg-brand-50 transition-colors">
-                          <Edit2 size={14} />
-                        </button>
-                        <button onClick={() => setDeleteId(product.id)} className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors">
-                          <Trash2 size={14} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         )}
       </div>
@@ -357,8 +395,6 @@ export default function AdminProducts() {
               {/* Images */}
               <div>
                 <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Images</h3>
-
-                {/* Upload zone */}
                 <div
                   onClick={() => fileInputRef.current?.click()}
                   className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center cursor-pointer hover:border-brand-400 hover:bg-brand-50 transition-colors"
@@ -384,41 +420,71 @@ export default function AdminProducts() {
                   className="hidden"
                   onChange={(e) => handleFileUpload(e.target.files)}
                 />
-
-                {/* Image previews */}
                 {images.length > 0 && (
-                  <div className="mt-3 grid grid-cols-3 gap-2">
+                  <div className="mt-3 space-y-2">
                     {images.map((img, idx) => (
-                      <div key={idx} className={`relative group rounded-lg overflow-hidden border-2 ${img.isPrimary ? "border-brand-500" : "border-transparent"}`}>
-                        <Image src={img.url} alt={`Image ${idx + 1}`} width={120} height={120} className="w-full aspect-square object-cover" />
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1">
+                      <div key={idx} className={`flex items-center gap-3 p-2 rounded-xl border-2 ${img.isPrimary ? "border-brand-500 bg-brand-50" : "border-gray-100"}`}>
+                        {/* Miniature */}
+                        <div className="relative w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 group">
+                          <Image src={img.url} alt={`Image ${idx + 1}`} width={56} height={56} className="w-full h-full object-cover" />
+                          {img.isPrimary && (
+                            <span className="absolute inset-0 flex items-center justify-center bg-brand-500/80">
+                              <Star size={14} className="text-white fill-white" />
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Couleur assignée */}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-medium text-gray-600 mb-1">Couleur de cette image</p>
+                          <div className="flex flex-wrap gap-1">
+                            <button
+                              type="button"
+                              onClick={() => setImages((prev) => prev.map((im, i) => i === idx ? { ...im, color: undefined } : im))}
+                              className={`px-2 py-0.5 text-[10px] font-semibold rounded-full border transition-all ${!img.color ? "border-brand-500 bg-brand-500 text-white" : "border-gray-200 text-gray-500 hover:border-gray-400"}`}
+                            >
+                              Toutes
+                            </button>
+                            {COLORS.map((c) => (
+                              <button
+                                key={c.name}
+                                type="button"
+                                title={c.name}
+                                onClick={() => setImages((prev) => prev.map((im, i) => i === idx ? { ...im, color: im.color === c.name ? undefined : c.name } : im))}
+                                className={`w-5 h-5 rounded-full border-2 transition-all flex-shrink-0 ${img.color === c.name ? "border-brand-500 scale-110 shadow" : "border-gray-200 hover:border-gray-400"}`}
+                                style={{ backgroundColor: c.hex }}
+                              />
+                            ))}
+                          </div>
+                          {img.color && (
+                            <p className="text-[10px] text-brand-600 font-semibold mt-1">{img.color}</p>
+                          )}
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex flex-col gap-1 flex-shrink-0">
                           <button
                             onClick={() => setPrimary(idx)}
-                            title="Set as primary"
-                            className="p-1 bg-white rounded-full text-amber-500 hover:bg-amber-50"
+                            title="Photo principale"
+                            className={`p-1.5 rounded-lg transition-colors ${img.isPrimary ? "text-amber-500" : "text-gray-300 hover:text-amber-400 hover:bg-amber-50"}`}
                           >
-                            <Star size={12} fill={img.isPrimary ? "currentColor" : "none"} />
+                            <Star size={14} fill={img.isPrimary ? "currentColor" : "none"} />
                           </button>
                           <button
                             onClick={() => removeImage(idx)}
-                            title="Remove"
-                            className="p-1 bg-white rounded-full text-red-500 hover:bg-red-50"
+                            title="Supprimer"
+                            className="p-1.5 rounded-lg text-gray-300 hover:text-red-500 hover:bg-red-50 transition-colors"
                           >
-                            <X size={12} />
+                            <X size={14} />
                           </button>
                         </div>
-                        {img.isPrimary && (
-                          <span className="absolute top-1 left-1 text-[9px] font-bold bg-brand-500 text-white px-1.5 py-0.5 rounded-full">
-                            Primary
-                          </span>
-                        )}
                       </div>
                     ))}
                   </div>
                 )}
                 {images.length > 0 && (
-                  <p className="text-xs text-gray-400 mt-2 flex items-center gap-1">
-                    <Star size={10} /> Hover une image et clique l&apos;étoile pour la définir comme principale
+                  <p className="text-xs text-gray-400 mt-2">
+                    ⭐ Clique l&apos;étoile pour définir la photo principale · Assigne une couleur à chaque image pour qu&apos;elle s&apos;affiche selon la couleur sélectionnée.
                   </p>
                 )}
               </div>
@@ -478,7 +544,6 @@ export default function AdminProducts() {
                     ))}
                   </select>
                 </div>
-
                 {categories.length > 0 && (
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Categories</label>
@@ -502,7 +567,6 @@ export default function AdminProducts() {
                         </label>
                       ))}
                     </div>
-                    <p className="text-xs text-gray-400 mt-1">Assign to Accessories to hide from Men/Women pages</p>
                   </div>
                 )}
               </div>
@@ -531,74 +595,153 @@ export default function AdminProducts() {
                 </div>
               </div>
 
-              {/* Pricing & Stock */}
-              <div className="space-y-4">
-                <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Pricing & Stock</h3>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Price ($) *</label>
-                    <input
-                      type="number"
-                      value={form.variantPrice}
-                      onChange={(e) => setForm((f) => ({ ...f, variantPrice: e.target.value }))}
-                      className="w-full h-10 px-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
-                      placeholder="129.99"
-                    />
+              {/* Variants */}
+              <div>
+                <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">
+                  Tailles &amp; Couleurs
+                  {variants.length > 0 && (
+                    <span className="ml-2 normal-case font-normal text-gray-400">({variants.length} variant{variants.length > 1 ? "s" : ""})</span>
+                  )}
+                </h3>
+
+                {/* Existing variants list */}
+                {variants.length > 0 && (
+                  <div className="border border-gray-200 rounded-xl overflow-hidden mb-3">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="bg-gray-50 border-b border-gray-200">
+                          <th className="text-left px-3 py-2 text-xs font-semibold text-gray-500">Taille</th>
+                          <th className="text-left px-3 py-2 text-xs font-semibold text-gray-500">Couleur</th>
+                          <th className="text-left px-3 py-2 text-xs font-semibold text-gray-500">Prix</th>
+                          <th className="text-left px-3 py-2 text-xs font-semibold text-gray-500">Stock</th>
+                          <th className="px-3 py-2 w-8" />
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-100">
+                        {variants.map((v, idx) => (
+                          <tr key={idx} className="hover:bg-gray-50">
+                            <td className="px-3 py-2.5">
+                              <span className="font-mono text-xs bg-gray-100 px-2 py-0.5 rounded font-semibold text-gray-700">
+                                {v.size || "—"}
+                              </span>
+                            </td>
+                            <td className="px-3 py-2.5">
+                              {v.color ? (
+                                <span className="flex items-center gap-1.5">
+                                  <span
+                                    className="w-4 h-4 rounded-full border border-gray-200 flex-shrink-0"
+                                    style={{ backgroundColor: colorHex(v.color) }}
+                                  />
+                                  <span className="text-xs text-gray-700">{v.color}</span>
+                                </span>
+                              ) : (
+                                <span className="text-xs text-gray-400">—</span>
+                              )}
+                            </td>
+                            <td className="px-3 py-2.5">
+                              <span className="text-xs font-semibold text-gray-900">
+                                {v.price ? `$${parseFloat(v.price).toFixed(2)}` : "—"}
+                              </span>
+                            </td>
+                            <td className="px-3 py-2.5">
+                              <span className={`text-xs font-semibold ${parseInt(v.stock) === 0 ? "text-red-500" : parseInt(v.stock) <= 5 ? "text-amber-600" : "text-gray-900"}`}>
+                                {v.stock || "0"}
+                              </span>
+                            </td>
+                            <td className="px-3 py-2.5">
+                              <button
+                                onClick={() => removeVariant(idx)}
+                                className="p-1 rounded text-gray-300 hover:text-red-500 hover:bg-red-50 transition-colors"
+                              >
+                                <X size={13} />
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Stock</label>
-                    <input
-                      type="number"
-                      value={form.variantStock}
-                      onChange={(e) => setForm((f) => ({ ...f, variantStock: e.target.value }))}
-                      className="w-full h-10 px-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
-                      placeholder="50"
-                    />
+                )}
+
+                {/* Add new variant form */}
+                <div className="border border-dashed border-gray-200 rounded-xl p-4 space-y-3 bg-gray-50/50">
+                  <p className="text-xs font-semibold text-gray-500">Ajouter un variant</p>
+
+                  <div className="grid grid-cols-3 gap-2">
+                    <div>
+                      <label className="block text-xs text-gray-500 mb-1">Taille</label>
+                      <input
+                        value={newVariant.size}
+                        onChange={(e) => setNewVariant((v) => ({ ...v, size: e.target.value }))}
+                        onKeyDown={(e) => e.key === "Enter" && addVariant()}
+                        className="w-full h-9 px-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white"
+                        placeholder="42"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-500 mb-1">Prix ($) *</label>
+                      <input
+                        type="number"
+                        value={newVariant.price}
+                        onChange={(e) => setNewVariant((v) => ({ ...v, price: e.target.value }))}
+                        onKeyDown={(e) => e.key === "Enter" && addVariant()}
+                        className="w-full h-9 px-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white"
+                        placeholder="129.99"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-500 mb-1">Stock</label>
+                      <input
+                        type="number"
+                        value={newVariant.stock}
+                        onChange={(e) => setNewVariant((v) => ({ ...v, stock: e.target.value }))}
+                        onKeyDown={(e) => e.key === "Enter" && addVariant()}
+                        className="w-full h-9 px-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white"
+                        placeholder="10"
+                      />
+                    </div>
                   </div>
+
+                  {/* Color picker */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Size</label>
-                    <input
-                      value={form.variantSize}
-                      onChange={(e) => setForm((f) => ({ ...f, variantSize: e.target.value }))}
-                      className="w-full h-10 px-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
-                      placeholder="42"
-                    />
-                  </div>
-                  <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Couleur</label>
-                    <div className="flex flex-wrap gap-2">
-                      {[
-                        { name: "Black", hex: "#111111" },
-                        { name: "White", hex: "#ffffff" },
-                        { name: "Gray", hex: "#9ca3af" },
-                        { name: "Navy", hex: "#1e3a5f" },
-                        { name: "Blue", hex: "#3b82f6" },
-                        { name: "Red", hex: "#ef4444" },
-                        { name: "Orange", hex: "#f97316" },
-                        { name: "Green", hex: "#22c55e" },
-                        { name: "Yellow", hex: "#eab308" },
-                        { name: "Pink", hex: "#ec4899" },
-                        { name: "Purple", hex: "#a855f7" },
-                        { name: "Brown", hex: "#92400e" },
-                        { name: "Beige", hex: "#d4b896" },
-                      ].map((c) => (
+                    <label className="block text-xs text-gray-500 mb-2">Couleur</label>
+                    <div className="flex flex-wrap gap-1.5">
+                      {COLORS.map((c) => (
                         <button
                           key={c.name}
                           type="button"
                           title={c.name}
-                          onClick={() => setForm((f) => ({ ...f, variantColor: f.variantColor === c.name ? "" : c.name }))}
-                          className={`w-8 h-8 rounded-full border-2 transition-all ${form.variantColor === c.name ? "border-brand-500 scale-110 shadow-md" : "border-gray-200 hover:border-gray-400"}`}
+                          onClick={() => setNewVariant((v) => ({ ...v, color: v.color === c.name ? "" : c.name }))}
+                          className={`w-7 h-7 rounded-full border-2 transition-all ${
+                            newVariant.color === c.name
+                              ? "border-brand-500 scale-110 shadow-md"
+                              : "border-gray-200 hover:border-gray-400"
+                          }`}
                           style={{ backgroundColor: c.hex }}
-                        >
-                          {c.name === "White" && <span className="sr-only">White</span>}
-                        </button>
+                        />
                       ))}
                     </div>
-                    {form.variantColor && (
-                      <p className="text-xs text-gray-500 mt-1.5">Sélectionné : <strong>{form.variantColor}</strong></p>
+                    {newVariant.color && (
+                      <p className="text-xs text-gray-500 mt-1.5">
+                        Couleur : <strong>{newVariant.color}</strong>
+                      </p>
                     )}
                   </div>
+
+                  <button
+                    onClick={addVariant}
+                    disabled={!newVariant.price}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-brand-500 text-white text-xs font-semibold rounded-lg hover:bg-brand-600 transition-colors disabled:opacity-40"
+                  >
+                    <Plus size={12} /> Ajouter ce variant
+                  </button>
                 </div>
+
+                {variants.length === 0 && (
+                  <p className="text-xs text-amber-600 mt-2">
+                    ⚠️ Aucun variant — le produit ne sera pas visible sans au moins un variant avec un prix.
+                  </p>
+                )}
               </div>
 
               {/* Options / Flags */}
@@ -649,12 +792,8 @@ export default function AdminProducts() {
             <h3 className="font-bold text-gray-900 mb-2">Delete product?</h3>
             <p className="text-sm text-gray-500 mb-5">This action cannot be undone.</p>
             <div className="flex gap-3 justify-end">
-              <button onClick={() => setDeleteId(null)} className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg">
-                Cancel
-              </button>
-              <button onClick={() => handleDelete(deleteId)} className="px-4 py-2 text-sm font-semibold text-white bg-red-500 hover:bg-red-600 rounded-lg">
-                Delete
-              </button>
+              <button onClick={() => setDeleteId(null)} className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg">Cancel</button>
+              <button onClick={() => handleDelete(deleteId)} className="px-4 py-2 text-sm font-semibold text-white bg-red-500 hover:bg-red-600 rounded-lg">Delete</button>
             </div>
           </div>
         </div>

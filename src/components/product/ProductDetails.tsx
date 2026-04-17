@@ -19,9 +19,10 @@ import { StarRating } from "@/components/ui/StarRating";
 
 interface ProductDetailsProps {
   product: Product;
+  onColorChange?: (color: string) => void;
 }
 
-export function ProductDetails({ product }: ProductDetailsProps) {
+export function ProductDetails({ product, onColorChange }: ProductDetailsProps) {
   const router = useRouter();
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [selectedColorId, setSelectedColorId] = useState<string>(
@@ -158,7 +159,11 @@ export function ProductDetails({ product }: ProductDetailsProps) {
             {colors.map((variant) => (
               <button
                 key={variant.id}
-                onClick={() => { setSelectedColorId(variant.id); setSelectedSize(""); }}
+                onClick={() => {
+                  setSelectedColorId(variant.id);
+                  setSelectedSize("");
+                  if (onColorChange && variant.color) onColorChange(variant.color);
+                }}
                 className={cn(
                   "flex items-center gap-2 px-3 py-2 rounded-xl border-2 text-sm transition-all duration-150",
                   selectedColorId === variant.id
