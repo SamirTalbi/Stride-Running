@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Plus, Sparkles } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import { useCartStore } from "@/store/cartStore";
-import type { CartItem } from "@/types";
+import type { CartItem, Product, ProductVariant } from "@/types";
 
 interface Suggestion {
   id: string;
@@ -14,7 +14,7 @@ interface Suggestion {
   slug: string;
   brand?: { name: string } | null;
   images: { url: string; altText?: string | null }[];
-  variants: { id: string; size: string; color: string; colorHex?: string | null; price: number; comparePrice?: number | null; stock: number; isActive: boolean }[];
+  variants: { id: string; size: string; color: string; colorHex?: string; price: number; comparePrice?: number | null; stock: number; isActive: boolean }[];
 }
 
 export function CartUpsell({ cartItems }: { cartItems: CartItem[] }) {
@@ -59,7 +59,7 @@ export function CartUpsell({ cartItems }: { cartItems: CartItem[] }) {
         sortOrder: i,
         isPrimary: i === 0,
       })),
-      brand: suggestion.brand ?? undefined,
+      brand: suggestion.brand ? { id: "", slug: "", ...suggestion.brand } : undefined,
       // fields required by Product type but not used in cart display
       sku: "",
       description: undefined,
@@ -80,7 +80,7 @@ export function CartUpsell({ cartItems }: { cartItems: CartItem[] }) {
       createdAt: "",
     };
 
-    addItem(product, variant);
+    addItem(product as unknown as Product, variant as unknown as ProductVariant);
     setAddedId(suggestion.id);
     setTimeout(() => setAddedId(null), 1500);
   };
