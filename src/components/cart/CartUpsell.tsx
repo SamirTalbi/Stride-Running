@@ -59,7 +59,7 @@ export function CartUpsell({ cartItems }: { cartItems: CartItem[] }) {
         sortOrder: i,
         isPrimary: i === 0,
       })),
-      brand: suggestion.brand ? { id: "", slug: "", ...suggestion.brand } : undefined,
+      brand: suggestion.brand ?? undefined,
       // fields required by Product type but not used in cart display
       sku: "",
       description: undefined,
