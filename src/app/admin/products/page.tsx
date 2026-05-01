@@ -247,7 +247,12 @@ export default function AdminProducts() {
 
       const url = editingId ? `/api/admin/products/${editingId}` : "/api/admin/products";
       const method = editingId ? "PUT" : "POST";
-      await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+      const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        alert(`Save failed (${res.status}): ${err.error ?? "Unknown error"}`);
+        return;
+      }
       setShowForm(false);
       fetchProducts();
     } finally {

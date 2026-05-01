@@ -1,16 +1,10 @@
 // POST — Ajouter tracking en masse + envoyer emails clients
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
+import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { buildTrackingUrl } from "@/lib/carriers";
 import { sendShippingEmail } from "@/lib/email";
 
-async function requireAdmin() {
-  const { userId, sessionClaims } = await auth();
-  if (!userId) return false;
-  const role = (sessionClaims as { metadata?: { role?: string } })?.metadata?.role;
-  return role === "admin";
-}
 
 export async function POST(req: NextRequest) {
   if (!(await requireAdmin())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

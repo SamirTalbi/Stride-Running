@@ -1,13 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
+import { requireAdmin as isAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
-async function isAdmin() {
-  const { userId, sessionClaims } = await auth();
-  if (!userId) return false;
-  const role = (sessionClaims as { metadata?: { role?: string } })?.metadata?.role;
-  return role === "admin";
-}
 
 // Récupérer tous les messages d'une conversation
 export async function GET(
