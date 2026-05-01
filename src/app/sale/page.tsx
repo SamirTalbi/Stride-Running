@@ -39,8 +39,14 @@ export default async function SalePage() {
           <p className="text-red-200 text-lg">Les meilleures marques de running à prix réduit — pour une durée limitée.</p>
         </div>
       </div>
-      {/* @ts-expect-error Prisma type vs Product type */}
-      <ProductGrid products={products} showFilters />
+      <ProductGrid
+        products={products as unknown as any[]}
+        showFilters
+        hidePriceFilter
+        hideSizeFilter
+        hideBrandFilter
+        hideColorFilter
+      />
     </>
   );
 }

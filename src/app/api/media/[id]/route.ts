@@ -25,7 +25,6 @@ export async function GET(
       },
     });
   } catch (error) {
-    console.error("[Media Serve]", error);
     return new NextResponse("Error", { status: 500 });
   }
 }

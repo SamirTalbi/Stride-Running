@@ -6,67 +6,67 @@ const reviews = [
     id: "1",
     name: "Sarah M.",
     rating: 5,
-    title: "Best running shoes I've ever owned",
-    body: "I've been running for 10 years and these are without a doubt the most comfortable shoes I've ever worn. The cushioning is perfect for long runs.",
-    product: "Brooks Ghost 15",
+    title: "J'ai commandé des Saucony j'aime trop !",
+    body: "Franchement les chaussures sont top qualité je me sens vraiment bien dedans.",
+    product: "Saucony",
     verified: true,
     avatar: "",
-    date: "2 days ago",
+    date: "il y a 2 jours",
   },
   {
     id: "2",
     name: "James K.",
     rating: 5,
-    title: "Arrived in 2 days, great quality",
-    body: "Fast shipping, excellent packaging, and the shoes are exactly as described. Will definitely be ordering from Stride again!",
-    product: "Nike Air Zoom Pegasus 40",
+    title: "Arrivé en 2 jours, super qualité",
+    body: "Livraison rapide, excellent emballage, et les chaussures sont exactement comme décrites. Je repasserai commande sur ce site !",
+    product: "Asics",
     verified: true,
     avatar: "",
-    date: "1 week ago",
+    date: "il y a 1 semaine",
   },
   {
     id: "3",
     name: "Emma R.",
     rating: 5,
-    title: "Perfect for trail running",
-    body: "The grip on these is incredible. I ran through muddy trails last weekend and they handled everything perfectly. Highly recommend!",
-    product: "Salomon Speedcross 6",
+    title: "J'ai été surprise",
+    body: "Au début j'ai été mitigé mais au final le service client est réactif la livraison est rapide je recommande.",
+    product: "Ensemble Nike",
     verified: true,
     avatar: "",
-    date: "2 weeks ago",
+    date: "il y a 2 semaines",
   },
   {
     id: "4",
-    name: "Marcus T.",
+    name: "Rayan A.",
     rating: 4,
-    title: "Great shoes, fast delivery",
-    body: "Love the HOKA Clifton 9s. So much cushioning without feeling heavy. The only reason it's 4 stars is because my usual size runs slightly small.",
-    product: "HOKA Clifton 9",
+    title: "Incroyable livraison rapide",
+    body: "Les paires sont vraiment lourdes merci c'est carré",
+    product: "Saucony",
     verified: true,
     avatar: "",
-    date: "3 weeks ago",
+    date: "il y a 3 semaines",
   },
   {
     id: "5",
     name: "Lisa P.",
     rating: 5,
-    title: "Customer service was amazing",
-    body: "Had a question about sizing and the support team was incredibly helpful. Got my shoes the next day! Perfect fit.",
+    title: "Service client incroyable",
+    body: "J'avais une question sur la taille et l'équipe d'assistance a été incroyablement serviable. J'ai reçu mes chaussures le lendemain ! Taille parfaite.",
     product: "Asics Gel-Nimbus 25",
     verified: true,
     avatar: "",
-    date: "1 month ago",
+    date: "il y a 1 mois",
   },
   {
     id: "6",
     name: "David C.",
     rating: 5,
-    title: "Marathon ready!",
-    body: "Just finished my first marathon wearing the Saucony Endorphin Speed. The carbon plate made a huge difference in the final miles.",
+    title: "Prêt pour le marathon !",
+    body: "Je viens de terminer mon premier marathon avec les Saucony Endorphin Speed. La plaque de carbone a fait une énorme différence dans les derniers kilomètres.",
     product: "Saucony Endorphin Speed",
     verified: true,
     avatar: "",
-    date: "1 month ago",
+    date: "il y a 1 mois",
   },
 ];
 
@@ -77,10 +77,10 @@ export function ReviewsSection() {
         {/* Header */}
         <div className="text-center mb-12">
           <p className="text-sm font-semibold text-brand-500 uppercase tracking-widest mb-2">
-            Customer Reviews
+            Avis Clients
           </p>
           <h2 className="font-display font-black text-display-md text-gray-900 mb-4">
-            Loved by Runners
+            Approuvé par les Coureurs
           </h2>
           <div className="flex items-center justify-center gap-3">
             <div className="flex">
@@ -88,7 +88,7 @@ export function ReviewsSection() {
                 <Star key={i} size={20} className="fill-amber-400 text-amber-400" />
               ))}
             </div>
-            <span className="text-gray-600 font-semibold">4.9 from 50,000+ reviews</span>
+            <span className="text-gray-600 font-semibold">4.9 sur plus de 50 000 avis</span>
           </div>
         </div>
 
@@ -118,7 +118,7 @@ export function ReviewsSection() {
 
               {/* Product */}
               <p className="text-xs text-brand-500 font-semibold mt-3">
-                Reviewed: {review.product}
+                Produit : {review.product}
               </p>
 
               {/* Author */}
@@ -130,11 +130,7 @@ export function ReviewsSection() {
                 <div>
                   <div className="flex items-center gap-1.5">
                     <span className="text-sm font-semibold text-gray-900">{review.name}</span>
-                    {review.verified && (
-                      <span className="text-[10px] bg-green-100 text-green-600 px-1.5 py-0.5 rounded-md font-medium">
-                        Verified
-                      </span>
-                    )}
+
                   </div>
                   <span className="text-xs text-gray-400">{review.date}</span>
                 </div>

@@ -15,10 +15,14 @@ interface ProductFiltersProps {
   onFiltersChange: (filters: ProductFilters) => void;
   onSortChange: (sort: SortOption) => void;
   onClearFilters: () => void;
+  hidePriceFilter?: boolean;
+  hideSizeFilter?: boolean;
+  hideBrandFilter?: boolean;
+  hideColorFilter?: boolean;
 }
 
 const sortOptions: { value: SortOption; label: string }[] = [
-  { value: "best-sellers", label: "Best Sellers" },
+  { value: "best-sellers", label: "Meilleures ventes" },
   { value: "new-arrivals", label: "Nouveautés" },
   { value: "top-rated", label: "Mieux notés" },
   { value: "price-asc", label: "Prix croissant" },
@@ -50,6 +54,32 @@ const colorSwatches: Record<string, string> = {
   Purple: "#a855f7",
   Brown: "#92400e",
   Beige: "#d4b896",
+  Noir: "#111111",
+  Blanc: "#ffffff",
+  Gris: "#9ca3af",
+  Bleu: "#3b82f6",
+  Rouge: "#ef4444",
+  Vert: "#22c55e",
+  Jaune: "#eab308",
+  Rose: "#ec4899",
+  Violet: "#a855f7",
+  Marron: "#92400e",
+};
+
+const colorTranslations: Record<string, string> = {
+  Black: "Noir",
+  White: "Blanc",
+  Gray: "Gris",
+  Navy: "Marine",
+  Blue: "Bleu",
+  Red: "Rouge",
+  Orange: "Orange",
+  Green: "Vert",
+  Yellow: "Jaune",
+  Pink: "Rose",
+  Purple: "Violet",
+  Brown: "Marron",
+  Beige: "Beige",
 };
 
 function FilterSection({ title, children, defaultOpen = true }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
@@ -78,6 +108,10 @@ export function ProductFiltersPanel({
   onFiltersChange,
   onSortChange,
   onClearFilters,
+  hidePriceFilter = false,
+  hideSizeFilter = false,
+  hideBrandFilter = false,
+  hideColorFilter = false,
 }: ProductFiltersProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -121,34 +155,36 @@ export function ProductFiltersPanel({
       )}
 
       {/* Price */}
-      <FilterSection title="Prix">
-        <div className="space-y-1.5">
-          {priceRanges.map((range) => {
-            const isActive = filters.priceMin === range.min && filters.priceMax === range.max;
-            return (
-              <button
-                key={range.label}
-                onClick={() =>
-                  onFiltersChange(
-                    isActive
-                      ? { ...filters, priceMin: undefined, priceMax: undefined }
-                      : { ...filters, priceMin: range.min, priceMax: range.max }
-                  )
-                }
-                className={cn(
-                  "w-full text-left text-sm px-3 py-2 rounded-lg transition-colors",
-                  isActive ? "bg-brand-50 text-brand-600 font-medium" : "text-gray-600 hover:bg-gray-50"
-                )}
-              >
-                {range.label}
-              </button>
-            );
-          })}
-        </div>
-      </FilterSection>
+      {!hidePriceFilter && (
+        <FilterSection title="Prix">
+          <div className="space-y-1.5">
+            {priceRanges.map((range) => {
+              const isActive = filters.priceMin === range.min && filters.priceMax === range.max;
+              return (
+                <button
+                  key={range.label}
+                  onClick={() =>
+                    onFiltersChange(
+                      isActive
+                        ? { ...filters, priceMin: undefined, priceMax: undefined }
+                        : { ...filters, priceMin: range.min, priceMax: range.max }
+                    )
+                  }
+                  className={cn(
+                    "w-full text-left text-sm px-3 py-2 rounded-lg transition-colors",
+                    isActive ? "bg-brand-50 text-brand-600 font-medium" : "text-gray-600 hover:bg-gray-50"
+                  )}
+                >
+                  {range.label}
+                </button>
+              );
+            })}
+          </div>
+        </FilterSection>
+      )}
 
       {/* Brand */}
-      {availableBrands.length > 0 && (
+      {!hideBrandFilter && availableBrands.length > 0 && (
         <FilterSection title="Marque">
           <div className="space-y-1.5">
             {availableBrands.map((brand) => {
@@ -170,7 +206,7 @@ export function ProductFiltersPanel({
       )}
 
       {/* Color */}
-      {availableColors.length > 0 && (
+      {!hideColorFilter && availableColors.length > 0 && (
         <FilterSection title="Couleur">
           <div className="flex flex-wrap gap-2">
             {availableColors.map((color) => {
@@ -180,47 +216,51 @@ export function ProductFiltersPanel({
                 <button
                   key={color}
                   onClick={() => onFiltersChange({ ...filters, color: toggleArray(filters.color, color) })}
-                  title={color}
+                  title={colorTranslations[color] ?? color}
                   className={cn(
                     "relative w-8 h-8 rounded-full border-2 transition-all",
                     isActive ? "border-brand-500 scale-110 shadow-md" : "border-gray-200 hover:border-gray-400"
                   )}
                   style={hex ? { backgroundColor: hex } : {}}
                 >
-                  {!hex && <span className="text-[9px] font-bold text-gray-600 leading-none">{color.slice(0, 3)}</span>}
-                  {color === "White" && <span className="absolute inset-0 rounded-full border border-gray-200" />}
+                  {!hex && <span className="text-[9px] font-bold text-gray-600 leading-none">{(colorTranslations[color] ?? color).slice(0, 3)}</span>}
+                  {(color === "White" || color === "Blanc") && <span className="absolute inset-0 rounded-full border border-gray-200" />}
                 </button>
               );
             })}
           </div>
           {filters.color && filters.color.length > 0 && (
-            <p className="text-xs text-gray-400 mt-2">{filters.color.join(", ")}</p>
+            <p className="text-xs text-gray-400 mt-2">
+              {filters.color.map(c => colorTranslations[c] ?? c).join(", ")}
+            </p>
           )}
         </FilterSection>
       )}
 
       {/* Size */}
-      <FilterSection title="Taille" defaultOpen={false}>
-        <div className="flex flex-wrap gap-2">
-          {sizeOptions.map((size) => {
-            const isActive = filters.size?.includes(size);
-            return (
-              <button
-                key={size}
-                onClick={() => onFiltersChange({ ...filters, size: toggleArray(filters.size, size) })}
-                className={cn(
-                  "px-2.5 h-9 rounded-lg text-xs font-medium border transition-all duration-150",
-                  isActive
-                    ? "border-brand-500 bg-brand-500 text-white"
-                    : "border-gray-200 text-gray-700 hover:border-brand-300"
-                )}
-              >
-                {size}
-              </button>
-            );
-          })}
-        </div>
-      </FilterSection>
+      {!hideSizeFilter && (
+        <FilterSection title="Taille" defaultOpen={false}>
+          <div className="flex flex-wrap gap-2">
+            {sizeOptions.map((size) => {
+              const isActive = filters.size?.includes(size);
+              return (
+                <button
+                  key={size}
+                  onClick={() => onFiltersChange({ ...filters, size: toggleArray(filters.size, size) })}
+                  className={cn(
+                    "px-2.5 h-9 rounded-lg text-xs font-medium border transition-all duration-150",
+                    isActive
+                      ? "border-brand-500 bg-brand-500 text-white"
+                      : "border-gray-200 text-gray-700 hover:border-brand-300"
+                  )}
+                >
+                  {size}
+                </button>
+              );
+            })}
+          </div>
+        </FilterSection>
+      )}
 
       {/* Availability */}
       <div className="pb-4">

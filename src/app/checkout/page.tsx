@@ -18,14 +18,14 @@ import { Input } from "@/components/ui/Input";
 type Step = "information" | "payment" | "confirmation";
 
 const infoSchema = z.object({
-  email: z.string().email(),
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
-  address1: z.string().min(5),
+  email: z.string().email("Email invalide"),
+  firstName: z.string().min(1, "Prénom requis"),
+  lastName: z.string().min(1, "Nom requis"),
+  address1: z.string().min(5, "Adresse trop courte"),
   address2: z.string().optional(),
-  city: z.string().min(1),
+  city: z.string().min(1, "Ville requise"),
   state: z.string().optional(),
-  zip: z.string().min(5),
+  zip: z.string().min(5, "Code postal invalide"),
   phone: z.string().optional(),
 });
 
@@ -398,7 +398,7 @@ export default function CheckoutPage() {
                         className="px-4 h-10 bg-white border border-gray-200 rounded-lg text-sm font-medium
                                    text-gray-700 hover:bg-gray-50 disabled:opacity-50 transition-colors flex items-center gap-1.5"
                       >
-                        {couponLoading ? <Loader2 size={13} className="animate-spin" /> : "Apply"}
+                        {couponLoading ? <Loader2 size={13} className="animate-spin" /> : "Appliquer"}
                       </button>
                     </div>
                     {couponError && <p className="text-xs text-red-500 mt-1.5">{couponError}</p>}

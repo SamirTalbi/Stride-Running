@@ -39,8 +39,14 @@ export default async function MenPage() {
           </p>
         </div>
       </div>
-      {/* @ts-expect-error Prisma type vs Product type */}
-      <ProductGrid products={products} showFilters={true} />
+      <ProductGrid
+        products={products as unknown as any[]}
+        showFilters={true}
+        hidePriceFilter
+        hideSizeFilter
+        hideBrandFilter
+        hideColorFilter
+      />
     </>
   );
 }

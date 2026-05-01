@@ -79,7 +79,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ data: product }, { status: 201 });
   } catch (error) {
-    console.error("[Admin Products POST]", error);
     return NextResponse.json({ error: "Failed to create product" }, { status: 500 });
   }
 }

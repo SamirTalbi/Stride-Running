@@ -4,6 +4,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hide only the Clerk "Secured by / Development mode" branding badge */
+.cl-internal-b3fm6y,
+.cl-internal-1hq6q6g,
+.cl-internal-1dp54u7,
+.cl-internal-ph7vxs,
+[data-clerk-brand],
+a[href*="clerk.com"],
+a[href*="clerk.dev"] {
+  display: none !important;
+}
+
 @layer base {
   :root {
     --font-inter: 'Inter', system-ui, sans-serif;
@@ -113,3 +124,13 @@
   .aspect-hero { aspect-ratio: 16/9; }
   .aspect-portrait { aspect-ratio: 3/4; }
 }
+
+/* Hide Clerk internal branding and badges */
+.cl-internal-1hq6q6g, 
+.cl-internal-1dp54u7,
+.cl-internal-ph7vxs,
+.cl-internal-b3fm6y,
+[data-clerk-brand] {
+  display: none !important;
+}
+

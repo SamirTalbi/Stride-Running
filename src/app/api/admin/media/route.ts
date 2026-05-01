@@ -56,7 +56,6 @@ export async function GET(req: NextRequest) {
       totalCount: null,
     });
   } catch (error) {
-    console.error("[Media API]", error);
     return NextResponse.json({ error: "Failed to fetch media" }, { status: 500 });
   }
 }
@@ -71,7 +70,6 @@ export async function DELETE(req: NextRequest) {
     await prisma.media.delete({ where: { id: publicId } });
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("[Media Delete]", error);
     return NextResponse.json({ error: "Delete failed" }, { status: 500 });
   }
 }

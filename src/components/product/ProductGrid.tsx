@@ -14,9 +14,22 @@ interface ProductGridProps {
   loading?: boolean;
   title?: string;
   showFilters?: boolean;
+  hidePriceFilter?: boolean;
+  hideSizeFilter?: boolean;
+  hideBrandFilter?: boolean;
+  hideColorFilter?: boolean;
 }
 
-export function ProductGrid({ products, loading = false, title, showFilters = true }: ProductGridProps) {
+export function ProductGrid({
+  products,
+  loading = false,
+  title,
+  showFilters = true,
+  hidePriceFilter = false,
+  hideSizeFilter = false,
+  hideBrandFilter = false,
+  hideColorFilter = false
+}: ProductGridProps) {
   const [filters, setFilters] = useState<ProductFilters>({});
   const [sortBy, setSortBy] = useState<SortOption>("best-sellers");
   const [view, setView] = useState<"grid" | "list">("grid");
@@ -107,6 +120,10 @@ export function ProductGrid({ products, loading = false, title, showFilters = tr
             onFiltersChange={setFilters}
             onSortChange={setSortBy}
             onClearFilters={handleClearFilters}
+            hidePriceFilter={hidePriceFilter}
+            hideSizeFilter={hideSizeFilter}
+            hideBrandFilter={hideBrandFilter}
+            hideColorFilter={hideColorFilter}
           />
         )}
 
@@ -147,7 +164,7 @@ export function ProductGrid({ products, loading = false, title, showFilters = tr
             <div className="flex items-center gap-3">
               <Select
                 options={[
-                  { value: "best-sellers", label: "Best Sellers" },
+                  { value: "best-sellers", label: "Meilleures ventes" },
                   { value: "new-arrivals", label: "Nouveautés" },
                   { value: "top-rated", label: "Mieux notés" },
                   { value: "price-asc", label: "Prix croissant" },

@@ -28,7 +28,7 @@ function SuccessContent() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 text-dark-DEFAULT">
       <div className="max-w-md w-full text-center">
         <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
           <Check size={36} className="text-green-500" />

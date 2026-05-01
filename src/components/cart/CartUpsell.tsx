@@ -12,7 +12,7 @@ interface Suggestion {
   id: string;
   name: string;
   slug: string;
-  brand?: { name: string } | null;
+  brand?: { id: string; name: string; slug: string } | null;
   images: { url: string; altText?: string | null }[];
   variants: { id: string; size: string; color: string; colorHex?: string; price: number; comparePrice?: number | null; stock: number; isActive: boolean }[];
 }

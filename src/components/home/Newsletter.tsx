@@ -19,9 +19,9 @@ export function Newsletter() {
   };
 
   const perks = [
-    { icon: Tag, text: "10% off your first order" },
-    { icon: Zap, text: "Early access to new drops" },
-    { icon: Gift, text: "Exclusive member-only deals" },
+    { icon: Tag, text: "-10% sur votre première commande" },
+    { icon: Zap, text: "Accès anticipé aux nouveautés" },
+    { icon: Gift, text: "Offres exclusives aux membres" },
   ];
 
   return (
@@ -46,10 +46,10 @@ export function Newsletter() {
         </div>
 
         <h2 className="font-display font-black text-white text-display-md mb-4">
-          Join the Stride Community
+          Rejoignez la Communauté Stride
         </h2>
         <p className="text-white/80 text-lg mb-8 max-w-md mx-auto">
-          Get training tips, gear drops, and exclusive offers straight to your inbox.
+          Recevez des conseils d'entraînement, des nouveautés et des offres exclusives.
         </p>
 
         {/* Perks */}
@@ -73,7 +73,7 @@ export function Newsletter() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email address"
+                placeholder="Entrez votre adresse e-mail"
                 required
                 className="w-full h-12 bg-white text-gray-900 placeholder:text-gray-400 text-sm
                            pl-10 pr-4 rounded-xl border-0 outline-none focus:ring-2 focus:ring-white/50"
@@ -87,21 +87,21 @@ export function Newsletter() {
               rightIcon={<ArrowRight size={16} />}
               className="bg-dark-DEFAULT hover:bg-dark-100 text-white"
             >
-              Subscribe
+              S'abonner
             </Button>
           </form>
         ) : (
           <div className="flex items-center justify-center gap-3 py-4 animate-scale-in">
             <CheckCircle size={24} className="text-white" />
             <div className="text-white text-left">
-              <p className="font-bold">You&apos;re in! Check your email.</p>
-              <p className="text-sm text-white/80">Your 10% off code is on its way.</p>
+              <p className="font-bold">C'est fait ! Vérifiez vos e-mails.</p>
+              <p className="text-sm text-white/80">Votre code de -10% arrive.</p>
             </div>
           </div>
         )}
 
         <p className="text-white/50 text-xs mt-4">
-          No spam, ever. Unsubscribe at any time.
+          Aucun spam. Désinscrivez-vous à tout moment.
         </p>
       </div>
     </section>

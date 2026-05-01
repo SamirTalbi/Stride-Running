@@ -77,7 +77,6 @@ export async function POST(req: NextRequest) {
 
       results.push({ orderId: shipment.orderId, success: true });
     } catch (err) {
-      console.error("[Ship API]", err);
       results.push({ orderId: shipment.orderId, success: false, error: String(err) });
     }
   }

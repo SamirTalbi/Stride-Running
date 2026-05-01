@@ -18,7 +18,7 @@ export function BrandsStrip() {
     <section className="py-12 border-b border-gray-100">
       <div className="max-w-[1440px] mx-auto px-4 lg:px-8">
         <p className="text-center text-xs font-semibold text-gray-400 uppercase tracking-widest mb-8">
-          Top Brands
+          Les Meilleures Marques
         </p>
         <div className="flex items-center justify-center flex-wrap gap-4 md:gap-8">
           {brands.map((brand) => (

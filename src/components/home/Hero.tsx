@@ -10,35 +10,35 @@ import { Button } from "@/components/ui/Button";
 const slides = [
   {
     id: 1,
-    headline: "Run Faster.",
-    subheadline: "Go Further.",
-    tagline: "Break barriers, not your budget. Premium running gear for every level.",
-    ctaPrimary: { label: "Shop Running Shoes", href: "/men" },
-    ctaSecondary: { label: "Find My Perfect Shoe", href: "/find-my-shoe" },
+    headline: "Courez Plus Vite.",
+    subheadline: "Allez Plus Loin.",
+    tagline: "Dépassez vos limites, pas votre budget. Équipement premium pour tous les niveaux.",
+    ctaPrimary: { label: "Acheter Chaussures", href: "/men" },
+    ctaSecondary: { label: "Trouver ma chaussure", href: "/find-my-shoe" },
     image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=1600&h=900&fit=crop&q=85",
-    badge: "New Spring Collection",
+    badge: "Nouvelle Collection Printemps",
     accentColor: "from-brand-500",
   },
   {
     id: 2,
-    headline: "Trail Ready.",
-    subheadline: "Born Wild.",
-    tagline: "Conquer any terrain with our trail running collection.",
-    ctaPrimary: { label: "Shop Trail Shoes", href: "/trail" },
-    ctaSecondary: { label: "Trail Running Guide", href: "/blog/trail-running" },
+    headline: "Prêt pour le Trail.",
+    subheadline: "Né Sauvage.",
+    tagline: "Dominez tous les terrains avec notre collection trail.",
+    ctaPrimary: { label: "Acheter Trail", href: "/trail" },
+    ctaSecondary: { label: "Guide du Trail", href: "/blog/trail-running" },
     image: "https://images.unsplash.com/photo-1502224562085-639556652f33?w=1600&h=900&fit=crop&q=85",
-    badge: "Trail Collection",
+    badge: "Collection Trail",
     accentColor: "from-emerald-500",
   },
   {
     id: 3,
-    headline: "She Runs.",
-    subheadline: "She Wins.",
-    tagline: "Engineered for women. Designed to perform.",
-    ctaPrimary: { label: "Shop Women's", href: "/women" },
-    ctaSecondary: { label: "Women's Running Guide", href: "/blog/women-running" },
+    headline: "Elle Court.",
+    subheadline: "Elle Gagne.",
+    tagline: "Conçu pour les femmes. Créé pour la performance.",
+    ctaPrimary: { label: "Acheter Femme", href: "/women" },
+    ctaSecondary: { label: "Guide Running Femme", href: "/blog/women-running" },
     image: "https://images.unsplash.com/photo-1594882645126-14020914d58d?w=1600&h=900&fit=crop&q=85",
-    badge: "Women's Collection",
+    badge: "Collection Femme",
     accentColor: "from-purple-500",
   },
 ];
@@ -165,7 +165,7 @@ export function Hero() {
                     ? "w-8 h-2 bg-brand-500"
                     : "w-2 h-2 bg-white/40 hover:bg-white/60"
                 )}
-                aria-label={`Slide ${i + 1}`}
+                aria-label={`Diapositive ${i + 1}`}
               />
             ))}
           </div>
@@ -176,7 +176,7 @@ export function Hero() {
               onClick={prev}
               className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20
                          flex items-center justify-center text-white hover:bg-white/20 transition-colors"
-              aria-label="Previous slide"
+              aria-label="Précédent"
             >
               <ChevronLeft size={18} />
             </button>
@@ -184,7 +184,7 @@ export function Hero() {
               onClick={next}
               className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20
                          flex items-center justify-center text-white hover:bg-white/20 transition-colors"
-              aria-label="Next slide"
+              aria-label="Suivant"
             >
               <ChevronRight size={18} />
             </button>

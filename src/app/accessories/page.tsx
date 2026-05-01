@@ -6,8 +6,8 @@ import { prisma } from "@/lib/prisma";
 import { formatPrice } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Accessoires Running — Chaussettes, Montres GPS, Hydratation & Plus",
-  description: "Complétez votre équipement running avec les meilleurs accessoires. Chaussettes, montres GPS, vestes d'hydratation, écouteurs et plus encore.",
+  title: "Accessoires Running — Casquettes & Sacoches",
+  description: "Découvrez notre sélection d'accessoires de running indispensables. Retrouvez nos casquettes et sacoches de haute performance pour vos sorties.",
 };
 
 async function getAccessoryCategories() {
@@ -48,7 +48,45 @@ export default async function AccessoriesPage() {
     return <AccessoriesEmpty />;
   }
 
-  const { categories } = data;
+  const { categories: dbCategories } = data;
+
+  // We always want to show these two, prioritized and translated
+  const forceCategories = [
+    { 
+      id: "force-caps",
+      name: "Casquettes", 
+      slug: "caps", 
+      description: "Casquettes de performance pour vous protéger du soleil.",
+      imageUrl: null as string | null,
+      products: [] as any[]
+    },
+    { 
+      id: "force-bags",
+      name: "Sacoches", 
+      slug: "running-belts", 
+      description: "Ceintures et sacoches de running pour transporter vos essentiels.",
+      imageUrl: null as string | null,
+      products: [] as any[]
+    }
+  ];
+
+  // Merge with DB data if found
+  const categories = forceCategories.map(force => {
+    const dbMatch = dbCategories.find(c => 
+      c.slug === force.slug || 
+      c.slug.includes(force.slug.split("-")[0]) ||
+      c.name.toLowerCase().includes(force.name.toLowerCase().slice(0, -1))
+    );
+    
+    if (dbMatch) {
+      return {
+        ...dbMatch,
+        name: force.name, // Force French name
+        description: force.description // Force French desc
+      };
+    }
+    return force;
+  });
 
   return (
     <div className="max-w-[1440px] mx-auto px-4 lg:px-8 py-12">
@@ -58,8 +96,8 @@ export default async function AccessoriesPage() {
       </div>
 
       <div className="space-y-16">
-        {categories.map((cat) => {
-          const products = cat.products.map((pc) => pc.product);
+        {categories.map((cat: any) => {
+          const products = cat.products.map((pc: any) => pc.product);
           return (
             <section key={cat.id}>
               <div className="flex items-center justify-between mb-6">
@@ -94,7 +132,7 @@ export default async function AccessoriesPage() {
                 </div>
               ) : (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {products.map((product) => {
+                  {products.map((product: any) => {
                     const image = product.images[0]?.url;
                     const price = product.variants[0]?.price;
                     return (
@@ -145,11 +183,8 @@ export default async function AccessoriesPage() {
 
 function AccessoriesEmpty() {
   const staticCategories = [
-    { name: "Chaussettes Running", slug: "socks", image: "https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?w=400&h=400&fit=crop" },
-    { name: "Montres GPS", slug: "gps-watches", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop" },
-    { name: "Vestes d'Hydratation", slug: "hydration-vests", image: "https://images.unsplash.com/photo-1502224562085-639556652f33?w=400&h=400&fit=crop" },
-    { name: "Écouteurs", slug: "headphones", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop" },
-    { name: "Ceintures Running", slug: "running-belts", image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=400&fit=crop" },
+    { name: "Casquettes", slug: "caps", image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=400&h=400&fit=crop" },
+    { name: "Sacoches", slug: "running-belts", image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=400&fit=crop" },
   ];
 
   return (

@@ -93,14 +93,14 @@ export function ProductCard({ product, priority = false, className }: ProductCar
           {/* Badges */}
           <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
             {product.isNewArrival && (
-              <Badge variant="brand" size="sm">New</Badge>
+              <Badge variant="brand" size="sm">Nouveau</Badge>
             )}
             {discount > 0 && (
               <Badge variant="error" size="sm">-{discount}%</Badge>
             )}
             {product.isBestSeller && !product.isNewArrival && (
               <Badge variant="default" size="sm" className="bg-amber-100 text-amber-700">
-                Best Seller
+                Meilleure Vente
               </Badge>
             )}
           </div>
@@ -116,7 +116,7 @@ export function ProductCard({ product, priority = false, className }: ProductCar
                 : "bg-white/90 text-gray-400 hover:text-red-400",
               "opacity-0 group-hover:opacity-100"
             )}
-            aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            aria-label={isWishlisted ? "Retirer des favoris" : "Ajouter aux favoris"}
           >
             <Heart
               size={15}
@@ -204,7 +204,7 @@ export function ProductCard({ product, priority = false, className }: ProductCar
                 "w-1.5 h-1.5 rounded-full",
                 v.stock > 0 ? "bg-gray-300" : "bg-gray-100"
               )}
-              title={v.stock > 0 ? v.size : `${v.size} - sold out`}
+              title={v.stock > 0 ? v.size : `${v.size} - épuisé`}
             />
           ))}
           {product.variants.length > 8 && (

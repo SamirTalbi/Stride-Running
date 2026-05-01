@@ -1,34 +1,34 @@
-import { Truck, RotateCcw, Shield, Star, Zap } from "lucide-react";
+import { Truck, RotateCcw, Shield, PackageSearch, Zap } from "lucide-react";
 
 const indicators = [
   {
     icon: Truck,
-    title: "Free Shipping",
-    desc: "On orders over $75",
+    title: "Livraison Gratuite",
+    desc: "Dès 75€ d'achat",
     color: "text-brand-500 bg-brand-50",
   },
   {
     icon: RotateCcw,
-    title: "Easy Returns",
-    desc: "30-day free returns",
+    title: "Satisfait ou remboursé ✅",
+    desc: "Gratuit sous 15 jours",
     color: "text-blue-500 bg-blue-50",
   },
   {
     icon: Shield,
-    title: "Secure Payment",
-    desc: "256-bit SSL encryption",
+    title: "Paiement Sécurisé",
+    desc: "Cryptage SSL 256 bits",
     color: "text-green-500 bg-green-50",
   },
   {
-    icon: Star,
-    title: "4.9★ Rating",
-    desc: "From 50,000+ reviews",
+    icon: PackageSearch,
+    title: "Suivre son colis",
+    desc: "En temps réel",
     color: "text-amber-500 bg-amber-50",
   },
   {
     icon: Zap,
-    title: "Fast Delivery",
-    desc: "2-5 business days",
+    title: "Livraison Rapide",
+    desc: "2 à 5 jours ouvrés",
     color: "text-purple-500 bg-purple-50",
   },
 ];

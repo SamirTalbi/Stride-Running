@@ -23,7 +23,6 @@ export async function DELETE(
     await prisma.conversation.delete({ where: { id } });
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("[Conversation DELETE]", error);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }
@@ -48,7 +47,6 @@ export async function PATCH(
 
     return NextResponse.json(conversation);
   } catch (error) {
-    console.error("[Conversation PATCH]", error);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }

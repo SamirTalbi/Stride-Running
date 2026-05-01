@@ -60,7 +60,14 @@ export function MobileMenu({ isOpen, onClose, items }: MobileMenuProps) {
             <div className="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center">
               <Zap size={16} className="text-white fill-white" />
             </div>
-            <span className="font-display font-black text-lg text-dark-DEFAULT">STRIDE</span>
+            <div className="flex flex-col leading-[1.1] pt-0.5">
+              <span className="font-display font-black text-xl text-brand-500 tracking-tight">
+                Stride
+              </span>
+              <span className="font-display font-black text-lg text-dark-DEFAULT tracking-tight italic ml-1.5 -mt-1.5">
+                Running
+              </span>
+            </div>
           </Link>
           <button
             onClick={onClose}
@@ -73,10 +80,10 @@ export function MobileMenu({ isOpen, onClose, items }: MobileMenuProps) {
         {/* Quick actions */}
         <div className="flex items-center gap-1 px-4 py-3 border-b border-gray-100">
           {[
-            { icon: Search, label: "Search", href: "/search" },
-            { icon: User, label: "Account", href: "/account" },
-            { icon: Heart, label: "Wishlist", href: "/account/wishlist" },
-            { icon: ShoppingBag, label: "Cart", href: "/cart" },
+            { icon: Search, label: "Recherche", href: "/search" },
+            { icon: User, label: "Compte", href: "/account" },
+            { icon: Heart, label: "Favoris", href: "/account/wishlist" },
+            { icon: ShoppingBag, label: "Panier", href: "/cart" },
           ].map(({ icon: Icon, label, href }) => (
             <Link
               key={href}
@@ -126,7 +133,7 @@ export function MobileMenu({ isOpen, onClose, items }: MobileMenuProps) {
                         onClick={onClose}
                         className="flex items-center gap-2 py-2 text-sm font-semibold text-brand-500"
                       >
-                        View all {item.label} <ChevronRight size={14} />
+                        Voir tout {item.label} <ChevronRight size={14} />
                       </Link>
                       {item.children.map((child) =>
                         child.section ? (
@@ -183,7 +190,7 @@ export function MobileMenu({ isOpen, onClose, items }: MobileMenuProps) {
             className="flex items-center justify-between w-full px-4 py-3 bg-brand-500 text-white
                        font-semibold text-sm rounded-xl hover:bg-brand-600 transition-colors"
           >
-            Find My Perfect Shoe
+            Trouver ma chaussure idéale
             <ChevronRight size={16} />
           </Link>
           <div className="flex items-center gap-3 pt-1">
@@ -192,7 +199,7 @@ export function MobileMenu({ isOpen, onClose, items }: MobileMenuProps) {
               onClick={onClose}
               className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-700"
             >
-              <HelpCircle size={13} /> Support
+              <HelpCircle size={13} /> Aide
             </Link>
             <Link
               href="/contact"

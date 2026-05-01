@@ -17,7 +17,6 @@ export async function POST(req: NextRequest) {
 
     if (!host || !user || !pass) {
       // SMTP non configuré — on accepte quand même (log côté serveur)
-      console.warn("[Contact Form] SMTP non configuré, email non envoyé:", { firstName, email, message });
       return NextResponse.json({ success: true });
     }
 
@@ -59,7 +58,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("[Contact Form]", error);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }

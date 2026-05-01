@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 
 const categories = [
   {
-    title: "Running Route",
+    title: "Course sur Route",
     desc: "Optimisées pour le bitume",
     href: "/men",
     image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&h=800&fit=crop&q=80",
@@ -12,7 +12,7 @@ const categories = [
     tall: true,
   },
   {
-    title: "Trail Running",
+    title: "Trail",
     desc: "Pour les aventures hors-route",
     href: "/shoes",
     image: "https://images.unsplash.com/photo-1502224562085-639556652f33?w=600&h=400&fit=crop&q=80",
@@ -20,7 +20,7 @@ const categories = [
     tall: false,
   },
   {
-    title: "Performance & Racing",
+    title: "Performance & Compétition",
     desc: "Chaque seconde compte",
     href: "/best-sellers",
     image: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=600&h=400&fit=crop&q=80",

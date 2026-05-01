@@ -20,14 +20,14 @@ export function PromoSection() {
           <div className="absolute inset-0 bg-gradient-to-r from-red-900/70 via-red-900/40 to-transparent" />
           <div className="absolute inset-0 flex flex-col justify-center px-8">
             <span className="inline-block px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-full mb-3 w-fit">
-              LIMITED TIME
+              TEMPS LIMITÉ
             </span>
             <h3 className="font-display font-black text-white text-3xl md:text-4xl leading-tight mb-2">
-              Up to 50% Off
+              Jusqu'à -50%
             </h3>
-            <p className="text-white/80 text-sm mb-4">Premium shoes, incredible prices</p>
+            <p className="text-white/80 text-sm mb-4">Chaussures premium, prix incroyables</p>
             <span className="flex items-center gap-2 text-white font-semibold text-sm hover:gap-3 transition-all">
-              Shop Sale <ArrowRight size={16} />
+              Acheter en Solde <ArrowRight size={16} />
             </span>
           </div>
         </Link>
@@ -46,14 +46,14 @@ export function PromoSection() {
           <div className="absolute inset-0 bg-gradient-to-r from-brand-900/80 via-brand-900/40 to-transparent" />
           <div className="absolute inset-0 flex flex-col justify-center px-8">
             <span className="inline-block px-3 py-1 bg-brand-500 text-white text-xs font-bold rounded-full mb-3 w-fit">
-              PERSONALIZED
+              PERSONNALISÉ
             </span>
             <h3 className="font-display font-black text-white text-3xl md:text-4xl leading-tight mb-2">
-              Find Your<br />Perfect Fit
+              Trouvez Votre<br />Taille Idéale
             </h3>
-            <p className="text-white/80 text-sm mb-4">Take our 60-second shoe finder quiz</p>
+            <p className="text-white/80 text-sm mb-4">Faites notre test de 60 secondes</p>
             <span className="flex items-center gap-2 text-white font-semibold text-sm hover:gap-3 transition-all">
-              Start Quiz <ArrowRight size={16} />
+              Commencer le test <ArrowRight size={16} />
             </span>
           </div>
         </Link>

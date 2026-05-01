@@ -15,63 +15,63 @@ import { SearchModal } from "./SearchModal";
 import { UserButton, SignInButton, useUser } from "@clerk/nextjs";
 
 const navItems = [
-  { label: "New Arrivals", href: "/new-arrivals", highlight: true },
+  { label: "Nouveautés", href: "/new-arrivals", highlight: true },
   {
-    label: "Men",
+    label: "Homme",
     href: "/men",
     mega: "men",
     children: [
-      { label: "Toutes les chaussures", href: "/shoes", section: true },
-      { label: "Running Route", href: "/shoes/road-running" },
-      { label: "Trail", href: "/shoes/trail-running" },
-      { label: "Racing", href: "/shoes/racing" },
-      { label: "Débutant", href: "/shoes/beginner" },
-      { label: "Tous les vêtements", href: "/apparel", section: true },
-      { label: "T-shirts & Tops", href: "/apparel/tops" },
+      { label: "Les chaussures", href: "/shoes", section: true },
+      { label: "Chaussures", href: "/shoes/road-running" },
+      { label: "Claquettes", href: "/shoes/trail-running" },
+      // { label: "Compétition", href: "/shoes/racing" },
+      // { label: "Débutant", href: "/shoes/beginner" },
+      { label: "Les vêtements", href: "/apparel", section: true },
+      { label: "T-shirts & Hauts", href: "/apparel/tops" },
       { label: "Shorts", href: "/apparel/shorts" },
-      { label: "Joggers & Bas", href: "/apparel/joggers" },
-      { label: "Vestes & Gilets", href: "/apparel/jackets" },
-      { label: "Hauts à capuche", href: "/apparel/hoodies" },
-      { label: "Survêtements", href: "/apparel/tracksuits" },
+      { label: "Joggings & Bas", href: "/apparel/joggers" },
+      // { label: "Vestes & Gilets", href: "/apparel/jackets" },
+      // { label: "Hauts à capuche", href: "/apparel/hoodies" },
+      { label: "Ensembles", href: "/apparel/tracksuits" },
     ],
   },
   {
-    label: "Women",
+    label: "Femme",
     href: "/women",
     mega: "women",
     children: [
-      { label: "Toutes les chaussures", href: "/shoes", section: true },
-      { label: "Running Route", href: "/shoes/road-running" },
-      { label: "Trail", href: "/shoes/trail-running" },
-      { label: "Racing", href: "/shoes/racing" },
-      { label: "Débutant", href: "/shoes/beginner" },
-      { label: "Tous les vêtements", href: "/apparel", section: true },
-      { label: "T-shirts & Tops", href: "/apparel/tops" },
+      { label: "Les chaussures", href: "/shoes", section: true },
+      { label: "Chaussures", href: "/shoes/road-running" },
+      { label: "Claquettes", href: "/shoes/trail-running" },
+      // { label: "Compétition", href: "/shoes/racing" },
+      // { label: "Débutant", href: "/shoes/beginner" },
+      { label: "Les vêtements", href: "/apparel", section: true },
+      { label: "T-shirts & Hauts", href: "/apparel/tops" },
       { label: "Shorts", href: "/apparel/shorts" },
-      { label: "Joggers & Bas", href: "/apparel/joggers" },
-      { label: "Vestes & Gilets", href: "/apparel/jackets" },
-      { label: "Hauts à capuche", href: "/apparel/hoodies" },
-      { label: "Survêtements", href: "/apparel/tracksuits" },
+      { label: "Joggings & Bas", href: "/apparel/joggers" },
+      // { label: "Vestes & Gilets", href: "/apparel/jackets" },
+      // { label: "Hauts à capuche", href: "/apparel/hoodies" },
+      { label: "Ensembles", href: "/apparel/tracksuits" },
     ],
   },
-  {
-    label: "Apparel",
-    href: "/apparel",
-    children: [
-      { label: "T-shirts & Tops", href: "/apparel/tops" },
-      { label: "Shorts", href: "/apparel/shorts" },
-      { label: "Compression & Sport", href: "/apparel/tights" },
-      { label: "Vestes & Gilets", href: "/apparel/jackets" },
-      { label: "Hauts à capuche & Sweats", href: "/apparel/hoodies" },
-      { label: "Joggers & Bas", href: "/apparel/joggers" },
-      { label: "Survêtements", href: "/apparel/tracksuits" },
-      { label: "Sous-vêtements", href: "/apparel/base-layers" },
-    ],
-  },
-  { label: "Accessories", href: "/accessories" },
-  { label: "Marques", href: "/brands" },
-  { label: "Sale", href: "/sale", sale: true },
-  { label: "Conseils Running", href: "/blog" },
+  // {
+  //   label: "Vêtements",
+  //   href: "/apparel",
+  //   children: [
+  //     { label: "T-shirts & Débardeurs", href: "/apparel/tops" },
+  //     { label: "Shorts", href: "/apparel/shorts" },
+  //     { label: "Compression & Sport", href: "/apparel/tights" },
+  //     { label: "Vestes & Gilets", href: "/apparel/jackets" },
+  //     { label: "Hauts à capuche & Sweats", href: "/apparel/hoodies" },
+  //     { label: "Joggings & Bas", href: "/apparel/joggers" },
+  //     { label: "Survêtements", href: "/apparel/tracksuits" },
+  //     { label: "Sous-vêtements", href: "/apparel/base-layers" },
+  //   ],
+  // },
+  { label: "Accessoires", href: "/accessories" },
+  // { label: "Marques", href: "/brands" },
+  { label: "Meilleures ventes", href: "/sale", sale: true },
+  // { label: "Conseils Running", href: "/blog" },
 ];
 
 export function Header() {
@@ -112,16 +112,7 @@ export function Header() {
 
   return (
     <>
-      {/* Promo banner */}
-      <div className="bg-dark-DEFAULT text-white text-center text-xs py-2.5 px-4 font-medium tracking-wide">
-        <span className="flex items-center justify-center gap-2">
-          <Zap size={12} className="text-brand-400 fill-brand-400" />
-          FREE shipping on orders over $75 — Use code{" "}
-          <span className="font-bold text-brand-400 tracking-widest">STRIDE10</span>{" "}
-          for 10% off your first order
-          <Zap size={12} className="text-brand-400 fill-brand-400" />
-        </span>
-      </div>
+
 
       {/* Main header */}
       <header
@@ -131,7 +122,7 @@ export function Header() {
           scrolled ? "shadow-md" : "shadow-sm"
         )}
       >
-        <div className="max-w-[1440px] mx-auto px-4 lg:px-8">
+        <div className="max-w-[1440px] mx-auto px-1 lg:px-2">
           <div className="flex items-center justify-between h-16 lg:h-18">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 flex-shrink-0 group">
@@ -139,9 +130,14 @@ export function Header() {
                             group-hover:bg-brand-600 transition-colors duration-200 shadow-sm">
                 <Zap size={20} className="text-white fill-white" />
               </div>
-              <span className="font-display font-black text-xl text-dark-DEFAULT tracking-tight">
-                STRIDE
-              </span>
+              <div className="flex flex-col leading-[1.1] pt-0.5">
+                <span className="font-display font-black text-2xl text-brand-500 tracking-tight">
+                  Stride
+                </span>
+                <span className="font-display font-black text-xl text-dark-DEFAULT tracking-tight italic ml-0 -mt-2">
+                  Running
+                </span>
+              </div>
             </Link>
 
             {/* Desktop nav */}
@@ -184,7 +180,7 @@ export function Header() {
                 onClick={() => setSearchOpen(true)}
                 className="p-2.5 rounded-lg text-gray-600 hover:text-brand-500 hover:bg-gray-50
                            transition-colors duration-150"
-                aria-label="Search"
+                aria-label="Rechercher"
               >
                 <Search size={20} />
               </button>
@@ -193,7 +189,7 @@ export function Header() {
                 href="/account/wishlist"
                 className="relative p-2.5 rounded-lg text-gray-600 hover:text-brand-500 hover:bg-gray-50
                            transition-colors duration-150"
-                aria-label="Wishlist"
+                aria-label="Liste de souhaits"
               >
                 <Heart size={20} />
                 {wishlistItems.length > 0 && (
@@ -234,7 +230,7 @@ export function Header() {
                 onClick={openCart}
                 className="relative p-2.5 rounded-lg text-gray-600 hover:text-brand-500 hover:bg-gray-50
                            transition-colors duration-150 ml-1"
-                aria-label={`Cart (${itemCount} items)`}
+                aria-label={`Panier (${itemCount} articles)`}
               >
                 <ShoppingBag size={20} />
                 {itemCount > 0 && (
@@ -250,7 +246,7 @@ export function Header() {
                 onClick={() => setMobileOpen(true)}
                 className="lg:hidden p-2.5 rounded-lg text-gray-600 hover:text-brand-500 hover:bg-gray-50
                            transition-colors duration-150 ml-1"
-                aria-label="Open menu"
+                aria-label="Ouvrir le menu"
               >
                 <Menu size={22} />
               </button>

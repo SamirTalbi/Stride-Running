@@ -10,40 +10,40 @@ import type { ShoeFinderAnswers } from "@/types";
 const steps = [
   {
     key: "surface" as const,
-    question: "Where do you run most?",
+    question: "Où courez-vous le plus ?",
     options: [
-      { value: "road", label: "Road / Pavement", icon: "🏙️", desc: "Sidewalks, streets, treadmill" },
-      { value: "trail", label: "Trail / Off-road", icon: "🌲", desc: "Dirt, rocks, uneven terrain" },
-      { value: "treadmill", label: "Treadmill", icon: "⚡", desc: "Indoor running" },
-      { value: "track", label: "Track", icon: "🏟️", desc: "Running track, speed work" },
+      { value: "road", label: "Route / Bitume", icon: "🏙️", desc: "Trottoirs, rues, tapis" },
+      { value: "trail", label: "Trail / Nature", icon: "🌲", desc: "Terre, rochers, terrains accidentés" },
+      { value: "treadmill", label: "Tapis de course", icon: "⚡", desc: "Course en salle" },
+      { value: "track", label: "Piste", icon: "🏟️", desc: "Piste d'athlétisme, fractionné" },
     ],
   },
   {
     key: "distance" as const,
-    question: "What's your typical run distance?",
+    question: "Quelle est votre distance habituelle ?",
     options: [
-      { value: "short", label: "Short Runs", icon: "🏃", desc: "Under 5K" },
-      { value: "medium", label: "Medium Runs", icon: "🏃‍♂️", desc: "5K – 15K" },
-      { value: "long", label: "Long Runs", icon: "🏅", desc: "Half marathon+" },
-      { value: "ultra", label: "Ultra Distance", icon: "🦅", desc: "Marathon & beyond" },
+      { value: "short", label: "Sorties Courtes", icon: "🏃", desc: "Moins de 5 km" },
+      { value: "medium", label: "Sorties Moyennes", icon: "🏃‍♂️", desc: "5 km – 15 km" },
+      { value: "long", label: "Sorties Longues", icon: "🏅", desc: "Semi-marathon +" },
+      { value: "ultra", label: "Ultra Distance", icon: "🦅", desc: "Marathon et plus" },
     ],
   },
   {
     key: "experience" as const,
-    question: "How would you describe your experience?",
+    question: "Quel est votre niveau d'expérience ?",
     options: [
-      { value: "beginner", label: "Beginner", icon: "🌱", desc: "Just starting out" },
-      { value: "intermediate", label: "Intermediate", icon: "💪", desc: "Running 1+ years" },
-      { value: "advanced", label: "Advanced", icon: "🚀", desc: "Competitive runner" },
+      { value: "beginner", label: "Débutant", icon: "🌱", desc: "Je commence tout juste" },
+      { value: "intermediate", label: "Intermédiaire", icon: "💪", desc: "Court depuis plus d'un an" },
+      { value: "advanced", label: "Avancé", icon: "🚀", desc: "Coureur de compétition" },
     ],
   },
   {
     key: "cushion" as const,
-    question: "What cushion level do you prefer?",
+    question: "Quel niveau d'amorti préférez-vous ?",
     options: [
-      { value: "minimal", label: "Minimal", icon: "🪶", desc: "Close-to-ground feel" },
-      { value: "moderate", label: "Moderate", icon: "⚖️", desc: "Balanced cushioning" },
-      { value: "plush", label: "Max Cushion", icon: "☁️", desc: "Maximum comfort" },
+      { value: "minimal", label: "Minimal", icon: "🪶", desc: "Sensations proches du sol" },
+      { value: "moderate", label: "Modéré", icon: "⚖️", desc: "Amorti équilibré" },
+      { value: "plush", label: "Amorti Maximal", icon: "☁️", desc: "Confort maximum" },
     ],
   },
 ];
@@ -55,7 +55,7 @@ const recommendations = [
     image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&h=200&fit=crop",
     href: "/products/nike-air-zoom-pegasus-40",
     match: 98,
-    tag: "Best Match",
+    tag: "Meilleur Choix",
   },
   {
     name: "Brooks Ghost 15",
@@ -63,7 +63,7 @@ const recommendations = [
     image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=200&h=200&fit=crop",
     href: "/products/brooks-ghost-15",
     match: 95,
-    tag: "Great Choice",
+    tag: "Excellent Choix",
   },
   {
     name: "HOKA Clifton 9",
@@ -71,7 +71,7 @@ const recommendations = [
     image: "https://images.unsplash.com/photo-1539185441755-769473a23570?w=200&h=200&fit=crop",
     href: "/products/hoka-clifton-9",
     match: 91,
-    tag: "Worth Considering",
+    tag: "À Considérer",
   },
 ];
 
@@ -112,13 +112,13 @@ export function ShoeFinder() {
         {/* Header */}
         <div className="text-center mb-12">
           <p className="text-sm font-semibold text-brand-400 uppercase tracking-widest mb-3">
-            Personalized Recommendations
+            Recommandations Personnalisées
           </p>
           <h2 className="font-display font-black text-display-md text-white mb-4">
-            Find Your Perfect Shoe
+            Trouvez Votre Chaussure Idéale
           </h2>
           <p className="text-gray-400 text-lg max-w-lg mx-auto">
-            Answer 4 quick questions and we&apos;ll match you with the ideal running shoe.
+            Répondez à 4 questions rapides et nous trouverons votre chaussure idéale.
           </p>
         </div>
 
@@ -129,10 +129,10 @@ export function ShoeFinder() {
               <div className="px-8 pt-8 pb-0">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs text-gray-500 font-medium">
-                    Step {currentStep + 1} of {steps.length}
+                    Étape {currentStep + 1} sur {steps.length}
                   </span>
                   <span className="text-xs text-brand-400 font-semibold">
-                    {Math.round(progress)}% complete
+                    {Math.round(progress)}% complété
                   </span>
                 </div>
                 <div className="h-1.5 bg-dark-200 rounded-full overflow-hidden">
@@ -198,8 +198,8 @@ export function ShoeFinder() {
                 <div className="w-14 h-14 bg-green-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <CheckCircle size={28} className="text-green-500" />
                 </div>
-                <h3 className="text-2xl font-black text-white mb-2">Your Perfect Matches</h3>
-                <p className="text-gray-400">Based on your running profile</p>
+                <h3 className="text-2xl font-black text-white mb-2">Vos Correspondances Idéales</h3>
+                <p className="text-gray-400">Basé sur votre profil de coureur</p>
               </div>
 
               <div className="space-y-3 mb-8">
@@ -236,7 +236,7 @@ export function ShoeFinder() {
                         )}>
                           {rec.tag}
                         </span>
-                        <span className="text-[10px] text-gray-500">{rec.match}% match</span>
+                        <span className="text-[10px] text-gray-500">{rec.match}% de match</span>
                       </div>
                       <p className="text-sm font-bold text-white truncate">{rec.name}</p>
                       <p className="text-sm text-brand-400 font-semibold">${rec.price}</p>
@@ -251,7 +251,7 @@ export function ShoeFinder() {
                 <Link href="/find-my-shoe" className="flex-1">
                   <button className="w-full py-3 bg-brand-500 text-white font-bold rounded-xl
                                      hover:bg-brand-600 transition-colors flex items-center justify-center gap-2">
-                    See All Recommendations <ArrowRight size={16} />
+                    Voir Toutes les Recommandations <ArrowRight size={16} />
                   </button>
                 </Link>
                 <button
@@ -259,7 +259,7 @@ export function ShoeFinder() {
                   className="flex items-center justify-center gap-1.5 px-4 py-3 border border-dark-200
                              text-gray-400 hover:text-white rounded-xl transition-colors text-sm font-medium"
                 >
-                  <RotateCcw size={14} /> Retake
+                  <RotateCcw size={14} /> Recommencer
                 </button>
               </div>
             </div>
