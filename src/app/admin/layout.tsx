@@ -7,11 +7,13 @@ import {
   Zap, LayoutDashboard, Package, ShoppingCart, Users, Tag,
   BarChart2, Settings, FileText, Image as ImageIcon, Award,
   FolderOpen, Truck, FlaskConical, MessageSquare, Menu, X,
+  Sparkles,
 } from "lucide-react";
 
 const adminNav = [
   { label: "Dashboard",   href: "/admin",            icon: LayoutDashboard },
   { label: "Products",    href: "/admin/products",   icon: Package },
+  { label: "Import URL",  href: "/admin/import",     icon: Sparkles },
   { label: "Brands",      href: "/admin/brands",     icon: Award },
   { label: "Categories",  href: "/admin/categories", icon: FolderOpen },
   { label: "Orders",      href: "/admin/orders",     icon: ShoppingCart },

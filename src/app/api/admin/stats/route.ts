@@ -36,22 +36,17 @@ export async function GET() {
       },
     }),
     prisma.orderItem.groupBy({
-      by: ["productId"],
+      by: ["productId", "name"],
       _sum: { quantity: true, total: true },
       orderBy: { _sum: { total: "desc" } },
       take: 5,
     }),
   ]);
 
-  const topProductIds = topProducts.map((p) => p.productId);
-  const topProductDetails = await prisma.product.findMany({
-    where: { id: { in: topProductIds } },
-    select: { id: true, name: true },
-  });
-
   const topProductsWithNames = topProducts.map((p) => ({
-    ...p,
-    name: topProductDetails.find((d) => d.id === p.productId)?.name ?? "Unknown",
+    productId: p.productId,
+    name: p.name,
+    _sum: p._sum,
   }));
 
   return NextResponse.json({

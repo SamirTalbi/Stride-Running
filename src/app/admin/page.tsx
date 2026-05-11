@@ -21,7 +21,7 @@ type Stats = {
     user: { firstName: string | null; lastName: string | null } | null;
   }[];
   topProducts: {
-    productId: string;
+    productId: string | null;
     name: string;
     _sum: { quantity: number | null; total: number | null };
   }[];

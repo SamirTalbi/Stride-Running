@@ -261,7 +261,12 @@ export default function AdminProducts() {
   }
 
   async function handleDelete(id: string) {
-    await fetch(`/api/admin/products/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/admin/products/${id}`, { method: "DELETE" });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      alert(`Delete failed (${res.status}): ${err.error ?? "Unknown error"}`);
+      return;
+    }
     setDeleteId(null);
     fetchProducts();
   }

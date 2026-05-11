@@ -3,6 +3,7 @@ import { Hero } from "@/components/home/Hero";
 import { TrustIndicators } from "@/components/home/TrustIndicators";
 import { FeaturedCategories } from "@/components/home/FeaturedCategories";
 import { BestSellers } from "@/components/home/BestSellers";
+import { ShopByGender } from "@/components/home/ShopByGender";
 import { ShoeFinder } from "@/components/home/ShoeFinder";
 import { PromoSection } from "@/components/home/PromoSection";
 import { ReviewsSection } from "@/components/home/ReviewsSection";
@@ -23,6 +24,7 @@ export default function HomePage() {
       <TrustIndicators />
       <FeaturedCategories />
       <BestSellers />
+      <ShopByGender />
       <PromoSection />
       <ShoeFinder />
       <BrandsStrip />

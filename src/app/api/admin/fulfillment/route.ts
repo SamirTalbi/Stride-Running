@@ -40,8 +40,8 @@ export async function GET(req: NextRequest) {
   const variantMap = new Map<
     string,
     {
-      variantId: string;
-      productId: string;
+      variantId: string | null;
+      productId: string | null;
       productName: string;
       sku: string | null;
       size: string;
@@ -56,7 +56,7 @@ export async function GET(req: NextRequest) {
 
   for (const order of orders) {
     for (const item of order.items) {
-      const key = item.variantId;
+      const key = item.variantId ?? `deleted:${item.id}`;
       const existing = variantMap.get(key);
       if (existing) {
         existing.quantity += item.quantity;
@@ -67,11 +67,11 @@ export async function GET(req: NextRequest) {
           variantId: item.variantId,
           productId: item.productId,
           productName: item.name,
-          sku: item.product.sku ?? null,
+          sku: item.product?.sku ?? null,
           size: item.size,
           color: item.color,
-          colorHex: item.variant.colorHex ?? null,
-          imageUrl: item.product.images[0]?.url ?? item.imageUrl ?? null,
+          colorHex: item.variant?.colorHex ?? null,
+          imageUrl: item.product?.images[0]?.url ?? item.imageUrl ?? null,
           quantity: item.quantity,
           orderIds: [order.id],
           orderNumbers: [order.orderNumber],
