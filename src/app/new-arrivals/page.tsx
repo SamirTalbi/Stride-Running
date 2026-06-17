@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic"; // prix/promos toujours à jour
+
 export const metadata: Metadata = {
   title: "Nouveautés — Dernières Chaussures & Équipements Running",
   description: "Découvrez les toutes dernières chaussures et équipements running. Soyez le premier à courir avec les nouvelles sorties.",
@@ -34,7 +36,7 @@ export default async function NewArrivalsPage() {
             <span className="w-2 h-2 rounded-full bg-brand-500 animate-pulse-soft" />
             <p className="text-sm text-brand-400 font-semibold uppercase tracking-widest">Vient d&apos;arriver</p>
           </div>
-          <h1 className="font-display font-black text-5xl text-white">Nouveautés</h1>
+          <h1 className="font-display font-black text-4xl sm:text-5xl text-white">Nouveautés</h1>
           <p className="text-gray-400 mt-2">Les dernières chaussures de running et équipements, tout juste arrivés.</p>
         </div>
       </div>

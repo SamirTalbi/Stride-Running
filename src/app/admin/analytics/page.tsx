@@ -120,7 +120,7 @@ export default function AnalyticsPage() {
   return (
     <div className="p-4 md:p-8 min-h-full">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
         <div>
           <h1 className="text-2xl font-black text-gray-900">Analytics</h1>
           <p className="text-gray-500 text-sm mt-0.5">Performance overview for your store</p>
@@ -169,7 +169,7 @@ export default function AnalyticsPage() {
 
           {/* Main Chart */}
           <div className="bg-white rounded-2xl shadow-card p-6">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-6">
               <h2 className="font-bold text-gray-900">Over Time</h2>
               <div className="flex bg-gray-100 rounded-xl p-1 gap-1">
                 <button

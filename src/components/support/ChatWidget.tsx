@@ -167,10 +167,10 @@ export function ChatWidget() {
   if (!isLoaded || !isSignedIn) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end gap-3">
       {open && (
-        <div className="w-[360px] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-gray-100"
-          style={{ height: "520px" }}>
+        <div className="w-[calc(100vw-2rem)] max-w-[360px] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-gray-100
+                        h-[min(520px,calc(100dvh-7rem))]">
 
           {/* Header */}
           <div className="bg-brand-500 px-5 py-4 flex items-center justify-between flex-shrink-0">

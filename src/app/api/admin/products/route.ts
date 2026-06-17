@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
       include: {
         brand: { select: { name: true } },
         images: { where: { isPrimary: true }, take: 1 },
-        variants: { where: { isActive: true }, select: { price: true, stock: true } },
+        variants: { where: { isActive: true }, select: { price: true, comparePrice: true, stock: true } },
         categories: { include: { category: { select: { name: true } } } },
       },
     }),

@@ -22,17 +22,17 @@ const navItems = [
     mega: "men",
     children: [
       { label: "Les chaussures", href: "/shoes", section: true },
-      { label: "Chaussures", href: "/shoes/road-running" },
-      { label: "Claquettes", href: "/shoes/trail-running" },
+      { label: "Chaussures", href: "/men?cat=chaussures" },
+      { label: "Claquettes", href: "/men?cat=claquettes" },
       // { label: "Compétition", href: "/shoes/racing" },
       // { label: "Débutant", href: "/shoes/beginner" },
       { label: "Les vêtements", href: "/apparel", section: true },
-      { label: "T-shirts & Hauts", href: "/apparel/tops" },
-      { label: "Shorts", href: "/apparel/shorts" },
-      { label: "Joggings & Bas", href: "/apparel/joggers" },
-      // { label: "Vestes & Gilets", href: "/apparel/jackets" },
+      { label: "T-shirts & Hauts", href: "/men?cat=tops" },
+      { label: "Shorts", href: "/men?cat=shorts" },
+      { label: "Joggings & Bas", href: "/men?cat=joggers" },
+      { label: "Vestes", href: "/men?cat=jackets" },
       // { label: "Hauts à capuche", href: "/apparel/hoodies" },
-      { label: "Ensembles", href: "/apparel/tracksuits" },
+      { label: "Ensembles", href: "/men?cat=ensembles" },
     ],
   },
   {
@@ -41,17 +41,17 @@ const navItems = [
     mega: "women",
     children: [
       { label: "Les chaussures", href: "/shoes", section: true },
-      { label: "Chaussures", href: "/shoes/road-running" },
-      { label: "Claquettes", href: "/shoes/trail-running" },
+      { label: "Chaussures", href: "/women?cat=chaussures" },
+      { label: "Claquettes", href: "/women?cat=claquettes" },
       // { label: "Compétition", href: "/shoes/racing" },
       // { label: "Débutant", href: "/shoes/beginner" },
       { label: "Les vêtements", href: "/apparel", section: true },
-      { label: "T-shirts & Hauts", href: "/apparel/tops" },
-      { label: "Shorts", href: "/apparel/shorts" },
-      { label: "Joggings & Bas", href: "/apparel/joggers" },
-      // { label: "Vestes & Gilets", href: "/apparel/jackets" },
+      { label: "T-shirts & Hauts", href: "/women?cat=tops" },
+      { label: "Shorts", href: "/women?cat=shorts" },
+      { label: "Joggings & Bas", href: "/women?cat=joggers" },
+      { label: "Vestes", href: "/women?cat=jackets" },
       // { label: "Hauts à capuche", href: "/apparel/hoodies" },
-      { label: "Ensembles", href: "/apparel/tracksuits" },
+      { label: "Ensembles", href: "/women?cat=ensembles" },
     ],
   },
   // {
@@ -148,28 +148,54 @@ export function Header() {
                   className="relative"
                   onMouseEnter={() => item.children ? setActiveMenu(item.label) : setActiveMenu(null)}
                 >
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      "flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-lg",
-                      "transition-colors duration-150",
-                      item.highlight && "text-brand-500 font-semibold",
-                      item.sale && "text-red-500 font-semibold",
-                      !item.highlight && !item.sale && "text-gray-700 hover:text-brand-500 hover:bg-gray-50",
-                      pathname === item.href && "text-brand-500"
-                    )}
-                  >
-                    {item.label}
-                    {item.children && (
-                      <ChevronDown
-                        size={14}
-                        className={cn(
-                          "transition-transform duration-200",
-                          activeMenu === item.label && "rotate-180"
-                        )}
-                      />
-                    )}
-                  </Link>
+                  {item.children ? (
+                    <div
+                      className={cn(
+                        "flex items-center gap-0.5 px-3 py-2 text-sm font-medium rounded-lg",
+                        "transition-colors duration-150",
+                        "text-gray-700 hover:text-brand-500 hover:bg-gray-50",
+                        (pathname === item.href || activeMenu === item.label) && "text-brand-500"
+                      )}
+                    >
+                      {/* Clic sur le nom → toute la collection */}
+                      <Link href={item.href} onClick={() => setActiveMenu(null)}>
+                        {item.label}
+                      </Link>
+                      {/* Clic sur la flèche → menu déroulant */}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setActiveMenu(activeMenu === item.label ? null : item.label)
+                        }
+                        aria-expanded={activeMenu === item.label}
+                        aria-haspopup="true"
+                        aria-label={`Ouvrir le menu ${item.label}`}
+                        className="p-0.5 rounded hover:bg-gray-100"
+                      >
+                        <ChevronDown
+                          size={14}
+                          className={cn(
+                            "transition-transform duration-200",
+                            activeMenu === item.label && "rotate-180"
+                          )}
+                        />
+                      </button>
+                    </div>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className={cn(
+                        "flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-lg",
+                        "transition-colors duration-150",
+                        item.highlight && "text-brand-500 font-semibold",
+                        item.sale && "text-red-500 font-semibold",
+                        !item.highlight && !item.sale && "text-gray-700 hover:text-brand-500 hover:bg-gray-50",
+                        pathname === item.href && "text-brand-500"
+                      )}
+                    >
+                      {item.label}
+                    </Link>
+                  )}
                 </div>
               ))}
             </nav>
@@ -265,7 +291,13 @@ export function Header() {
       </header>
 
       {/* Mobile menu */}
-      <MobileMenu isOpen={mobileOpen} onClose={() => setMobileOpen(false)} items={navItems} />
+      <MobileMenu
+        isOpen={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        items={navItems}
+        onOpenSearch={() => setSearchOpen(true)}
+        onOpenCart={openCart}
+      />
 
       {/* Search modal */}
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />

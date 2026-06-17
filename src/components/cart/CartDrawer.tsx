@@ -246,11 +246,9 @@ export function CartDrawer() {
                   Passer la commande — {formatPrice(subtotal)}
                 </Button>
               </Link>
-              <Link href="/cart" onClick={closeCart}>
-                <Button variant="ghost" size="md" fullWidth>
-                  Voir le panier complet
-                </Button>
-              </Link>
+              <Button variant="ghost" size="md" fullWidth onClick={closeCart}>
+                Continuer mes achats
+              </Button>
             </div>
           </div>
         )}

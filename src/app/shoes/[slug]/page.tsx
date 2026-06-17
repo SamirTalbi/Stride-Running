@@ -55,7 +55,7 @@ export default async function ShoeCategoryPage({ params }: { params: Promise<{ s
         )}
         <div className="relative max-w-[1440px] mx-auto">
           <p className="text-sm text-brand-400 font-semibold uppercase tracking-widest mb-1">Chaussures /</p>
-          <h1 className="font-display font-black text-5xl text-white">{category.name}</h1>
+          <h1 className="font-display font-black text-4xl sm:text-5xl text-white">{category.name}</h1>
           {category.description && (
             <p className="text-gray-400 mt-2 max-w-xl">{category.description}</p>
           )}

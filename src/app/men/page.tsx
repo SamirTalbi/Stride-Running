@@ -25,7 +25,12 @@ async function getMenProducts() {
   });
 }
 
-export default async function MenPage() {
+export default async function MenPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ cat?: string }>;
+}) {
+  const { cat } = await searchParams;
   const products = await getMenProducts();
 
   return (
@@ -33,15 +38,17 @@ export default async function MenPage() {
       <div className="bg-dark-DEFAULT text-white py-12 px-4 lg:px-8">
         <div className="max-w-[1440px] mx-auto">
           <p className="text-sm text-brand-400 font-semibold uppercase tracking-widest mb-2">Collection Homme</p>
-          <h1 className="font-display font-black text-5xl text-white">Homme</h1>
+          <h1 className="font-display font-black text-4xl sm:text-5xl text-white">Homme</h1>
           <p className="text-gray-400 mt-2 max-w-lg">
             Chaussures, ensembles, vêtements & accessoires. La sélection complète pour entraînement, course et lifestyle.
           </p>
         </div>
       </div>
       <ProductGrid
+        key={cat ?? "all"}
         products={products as unknown as any[]}
         showFilters={true}
+        initialFilters={cat ? { category: [cat] } : undefined}
         hidePriceFilter
         hideSizeFilter
         hideBrandFilter

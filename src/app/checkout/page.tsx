@@ -53,6 +53,7 @@ export default function CheckoutPage() {
 
   const items = useCartStore((s) => s.items);
   const clearCart = useCartStore((s) => s.clearCart);
+  const openCart = useCartStore((s) => s.openCart);
 
   const subtotal = items.reduce((sum, i) => sum + i.variant.price * i.quantity, 0);
   const isFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD || coupon?.type === "FREE_SHIPPING";
@@ -225,10 +226,14 @@ export default function CheckoutPage() {
               </div>
               <Input label="Téléphone (optionnel)" type="tel" placeholder="+33 6 12 34 56 78" {...register("phone")} />
 
-              <div className="flex items-center justify-between pt-4">
-                <Link href="/cart" className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700">
+              <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={openCart}
+                  className="flex items-center justify-center sm:justify-start gap-1.5 text-sm text-gray-500 hover:text-gray-700"
+                >
                   <ArrowLeft size={14} /> Retour au panier
-                </Link>
+                </button>
                 <Button type="submit" variant="primary" size="lg" rightIcon={<ChevronRight size={16} />}>
                   Continuer vers la livraison
                 </Button>
@@ -287,11 +292,11 @@ export default function CheckoutPage() {
                 </div>
               )}
 
-              <div className="flex items-center justify-between pt-4">
+              <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 pt-4">
                 <button
                   onClick={() => setStep("information")}
                   disabled={paymentLoading}
-                  className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 disabled:opacity-40"
+                  className="flex items-center justify-center sm:justify-start gap-1.5 text-sm text-gray-500 hover:text-gray-700 disabled:opacity-40"
                 >
                   <ArrowLeft size={14} /> Retour
                 </button>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { ProductView } from "@/components/product/ProductView";
 import { BestSellers } from "@/components/home/BestSellers";
+import { BackButton } from "@/components/ui/BackButton";
 import { prisma } from "@/lib/prisma";
 
 async function getProduct(slug: string) {
@@ -85,8 +86,11 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   return (
     <>
       <div className="max-w-[1440px] mx-auto px-4 lg:px-8 py-6">
-        {/* Fil d'Ariane */}
-        <nav className="flex items-center gap-1.5 text-sm text-gray-500 mb-8">
+        {/* Retour + fil d'Ariane */}
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-8">
+          <BackButton />
+          <span className="hidden sm:block w-px h-4 bg-gray-200" />
+          <nav className="flex flex-wrap items-center gap-1.5 text-sm text-gray-500">
           <Link href="/" className="hover:text-brand-500 transition-colors">Accueil</Link>
           <ChevronRight size={14} />
           <Link href="/men" className="hover:text-brand-500 transition-colors">Chaussures</Link>
@@ -100,7 +104,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </>
           )}
           <span className="text-gray-900 font-medium truncate max-w-xs">{product.name}</span>
-        </nav>
+          </nav>
+        </div>
 
         {/* Layout produit */}
         {/* @ts-expect-error Prisma null vs undefined */}
@@ -163,7 +168,7 @@ function ProductInfoTabs({ product }: { product: Awaited<ReturnType<typeof getPr
           {product.features.length > 0 && (
             <div>
               <h3 className="font-bold text-gray-900 mb-3">Caractéristiques techniques</h3>
-              <ul className="grid grid-cols-2 gap-2">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {product.features.map((f: string) => (
                   <li key={f} className="flex items-start gap-2 text-sm text-gray-600">
                     <span className="w-1.5 h-1.5 rounded-full bg-brand-500 mt-2 flex-shrink-0" />

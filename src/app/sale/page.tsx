@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic"; // prix/promos toujours à jour
+
 export const metadata: Metadata = {
   title: "Soldes Chaussures Running — Jusqu'à -50%",
   description: "Profitez des meilleures offres sur les chaussures de running. Jusqu'à -50% sur Nike, Brooks, HOKA, Asics & plus. Offres limitées.",
@@ -35,7 +37,7 @@ export default async function SalePage() {
         />
         <div className="relative max-w-[1440px] mx-auto">
           <p className="text-sm font-semibold text-red-200 uppercase tracking-widest mb-2">Offres limitées</p>
-          <h1 className="font-display font-black text-5xl text-white mb-2">Jusqu&apos;à -50%</h1>
+          <h1 className="font-display font-black text-4xl sm:text-5xl text-white mb-2">Jusqu&apos;à -50%</h1>
           <p className="text-red-200 text-lg">Les meilleures marques de running à prix réduit — pour une durée limitée.</p>
         </div>
       </div>

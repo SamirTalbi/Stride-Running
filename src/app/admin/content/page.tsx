@@ -157,7 +157,7 @@ export default function ContentPage() {
   return (
     <div className="p-4 md:p-8 min-h-full">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="text-2xl font-black text-gray-900">Content</h1>
           <p className="text-gray-500 text-sm mt-0.5">Manage blog posts and editorial content</p>
@@ -178,8 +178,8 @@ export default function ContentPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex gap-3 mb-5">
-        <div className="relative flex-1 max-w-xs">
+      <div className="flex flex-wrap gap-3 mb-5">
+        <div className="relative flex-1 min-w-[180px] max-w-xs">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input placeholder="Search posts…" value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -276,19 +276,19 @@ export default function ContentPage() {
             </div>
 
             <div className="overflow-y-auto flex-1 px-6 py-5 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {field("title", "Title")}
                 {field("slug", "Slug (URL)")}
               </div>
               {field("excerpt", "Excerpt", "textarea")}
               {field("content", "Content", "textarea")}
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {field("author", "Author")}
                 {field("category", "Category")}
                 {field("tags", "Tags (comma-separated)")}
               </div>
               {field("imageUrl", "Cover Image URL", "url")}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {field("metaTitle", "Meta Title")}
                 {field("metaDesc", "Meta Description")}
               </div>

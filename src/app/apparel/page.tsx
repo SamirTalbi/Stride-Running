@@ -5,6 +5,8 @@ import { ArrowRight } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { formatPrice } from "@/lib/utils";
 
+export const dynamic = "force-dynamic"; // prix/promos toujours à jour
+
 export const metadata: Metadata = {
   title: "Vêtements Running — Hauts, Shorts, Collants & Vestes",
   description: "Vêtements running technique. Hauts, shorts, collants et vestes pour toutes les conditions.",

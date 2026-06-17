@@ -3,13 +3,13 @@ import Link from "next/link";
 const brands = [
   { name: "Nike", slug: "nike" },
   { name: "Adidas", slug: "adidas" },
-  { name: "Brooks", slug: "brooks" },
+  { name: "Under Armour", slug: "under-armour" },
   { name: "HOKA", slug: "hoka" },
   { name: "Asics", slug: "asics" },
   { name: "New Balance", slug: "new-balance" },
   { name: "Saucony", slug: "saucony" },
   { name: "Salomon", slug: "salomon" },
-  { name: "On Running", slug: "on-running" },
+  { name: "On Running", slug: "on" },
   { name: "Mizuno", slug: "mizuno" },
 ];
 

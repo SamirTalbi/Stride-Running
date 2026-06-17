@@ -17,14 +17,17 @@ export function ProductGallery({ images, productName, activeColor }: ProductGall
   const [lightbox, setLightbox] = useState(false);
   const [zoom, setZoom] = useState(false);
 
-  // Filter by color: show images tagged with activeColor OR images with no color tag (shared)
+  // Filter by color: show images tagged with activeColor OR images with no color tag (shared).
+  // When a color is selected, its own photos come FIRST (the chosen item becomes the hero),
+  // then the shared/overview photos.
   const all = [...images].sort((a, b) => a.sortOrder - b.sortOrder);
-  const hasColoredImages = all.some((img) => (img as ProductImage & { color?: string }).color);
+  const colorOf = (img: ProductImage) => (img as ProductImage & { color?: string }).color;
+  const hasColoredImages = all.some((img) => colorOf(img));
   const sorted = hasColoredImages && activeColor
-    ? all.filter((img) => {
-        const c = (img as ProductImage & { color?: string }).color;
-        return !c || c === activeColor;
-      })
+    ? [
+        ...all.filter((img) => colorOf(img) === activeColor),
+        ...all.filter((img) => !colorOf(img)),
+      ]
     : all;
 
   // Reset to first image when color changes
@@ -87,7 +90,7 @@ export function ProductGallery({ images, productName, activeColor }: ProductGall
               <button
                 onClick={(e) => { e.stopPropagation(); prev(); }}
                 className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 rounded-full
-                           flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100
+                           flex items-center justify-center shadow-md opacity-100 lg:opacity-0 lg:group-hover:opacity-100
                            transition-opacity hover:bg-white"
               >
                 <ChevronLeft size={18} />
@@ -95,7 +98,7 @@ export function ProductGallery({ images, productName, activeColor }: ProductGall
               <button
                 onClick={(e) => { e.stopPropagation(); next(); }}
                 className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 rounded-full
-                           flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100
+                           flex items-center justify-center shadow-md opacity-100 lg:opacity-0 lg:group-hover:opacity-100
                            transition-opacity hover:bg-white"
               >
                 <ChevronRight size={18} />

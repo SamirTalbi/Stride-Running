@@ -114,7 +114,7 @@ export function ProductCard({ product, priority = false, className }: ProductCar
               isWishlisted
                 ? "bg-red-50 text-red-500"
                 : "bg-white/90 text-gray-400 hover:text-red-400",
-              "opacity-0 group-hover:opacity-100"
+              "opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
             )}
             aria-label={isWishlisted ? "Retirer des favoris" : "Ajouter aux favoris"}
           >

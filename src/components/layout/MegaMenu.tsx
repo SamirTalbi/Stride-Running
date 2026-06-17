@@ -65,14 +65,22 @@ export function MegaMenu({ activeItem, items, onClose }: MegaMenuProps) {
   return (
     <div
       className="absolute top-full left-0 right-0 bg-white border-t border-gray-100 shadow-xl z-50
-                 animate-fade-in"
+                 animate-slide-down"
       onMouseLeave={onClose}
     >
-      <div className="max-w-[1440px] mx-auto px-8 py-8">
-        <div className="flex gap-12">
+      <div className="max-w-[1440px] mx-auto px-6 xl:px-8 py-8">
+        <div className="flex gap-8 xl:gap-12">
           {/* Links */}
-          <div className="flex-1 grid grid-cols-2 gap-x-12 gap-y-1.5">
+          <div className="flex-1 grid grid-cols-2 gap-x-8 xl:gap-x-12 gap-y-1.5">
             <div>
+              <Link
+                href={activeNav.href}
+                onClick={onClose}
+                className="flex items-center gap-1.5 mb-2 text-sm font-bold text-brand-500 hover:text-brand-600
+                           transition-colors duration-150"
+              >
+                Voir tout {activeItem} <ArrowRight size={14} />
+              </Link>
               {activeNav.children?.map((child) => (
                 child.section ? (
                   <Link

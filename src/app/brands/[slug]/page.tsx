@@ -41,7 +41,7 @@ export default async function BrandPage({ params }: { params: Promise<{ slug: st
     <>
       {/* Brand hero */}
       <div className="bg-dark-DEFAULT text-white py-12 px-4 lg:px-8">
-        <div className="max-w-[1440px] mx-auto flex items-center gap-6">
+        <div className="max-w-[1440px] mx-auto flex flex-col sm:flex-row sm:items-center gap-6">
           {brand.logoUrl ? (
             <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
               <img src={brand.logoUrl} alt={brand.name} className="w-full h-full object-contain" />
@@ -53,7 +53,7 @@ export default async function BrandPage({ params }: { params: Promise<{ slug: st
           )}
           <div>
             <p className="text-sm text-brand-400 font-semibold uppercase tracking-widest mb-1">Marque</p>
-            <h1 className="font-display font-black text-5xl text-white">{brand.name}</h1>
+            <h1 className="font-display font-black text-4xl sm:text-5xl text-white">{brand.name}</h1>
             {brand.description && (
               <p className="text-gray-400 mt-2 max-w-xl">{brand.description}</p>
             )}

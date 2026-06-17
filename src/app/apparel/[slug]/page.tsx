@@ -57,7 +57,7 @@ export default async function ApparelCategoryPage({ params }: { params: Promise<
           <p className="text-sm text-brand-400 font-semibold uppercase tracking-widest mb-1">
             <a href="/apparel" className="hover:text-white transition-colors">Apparel</a> /
           </p>
-          <h1 className="font-display font-black text-5xl text-white">{category.name}</h1>
+          <h1 className="font-display font-black text-4xl sm:text-5xl text-white">{category.name}</h1>
           {category.description && (
             <p className="text-gray-400 mt-2 max-w-xl">{category.description}</p>
           )}

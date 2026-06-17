@@ -10,8 +10,8 @@ const CATEGORY_TREE = [
     description: "Chaussures de running pour toutes les surfaces et distances",
     sortOrder: 0,
     children: [
-      { name: "Running Route", slug: "road-running", description: "Chaussures optimisées pour le bitume et les surfaces dures", sortOrder: 0 },
-      { name: "Trail Running", slug: "trail-running", description: "Chaussures pour chemins et terrains accidentés", sortOrder: 1 },
+      { name: "Chaussures", slug: "chaussures", description: "Chaussures de running et sneakers", sortOrder: 0 },
+      { name: "Claquettes", slug: "claquettes", description: "Claquettes & sandales de récupération", sortOrder: 1 },
       { name: "Racing", slug: "racing", description: "Chaussures de compétition légères et rapides", sortOrder: 2 },
       { name: "Débutant", slug: "beginner", description: "Chaussures confortables et stables pour bien débuter", sortOrder: 3 },
     ],
@@ -39,7 +39,7 @@ const CATEGORY_TREE = [
     sortOrder: 2,
     children: [
       { name: "GPS Watches", slug: "gps-watches", sortOrder: 0 },
-      { name: "Running Socks", slug: "running-socks", sortOrder: 1 },
+      { name: "Chaussettes", slug: "running-socks", sortOrder: 1 },
       { name: "Hydration Vests", slug: "hydration-vests", sortOrder: 2 },
       { name: "Headphones", slug: "headphones", sortOrder: 3 },
       { name: "Running Belts", slug: "running-belts", sortOrder: 4 },

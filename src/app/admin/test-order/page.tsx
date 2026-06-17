@@ -112,7 +112,7 @@ export default function TestOrderPage() {
       <div className="bg-white rounded-2xl shadow-card p-6 mb-6 space-y-5">
         <h2 className="font-bold text-gray-900">Configuration</h2>
 
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {/* Nombre de commandes */}
           <div className="space-y-2">
             <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
@@ -152,7 +152,7 @@ export default function TestOrderPage() {
 
       {/* Sélection produits */}
       <div className="bg-white rounded-2xl shadow-card p-6 mb-6">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
           <h2 className="font-bold text-gray-900">Produits à inclure</h2>
           <div className="flex items-center gap-3">
             <span className="text-xs text-gray-500">

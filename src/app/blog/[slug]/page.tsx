@@ -534,7 +534,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             {post.title}
           </h1>
           <p className="text-lg text-gray-500 leading-relaxed mb-6">{post.excerpt}</p>
-          <div className="flex items-center gap-4 text-sm text-gray-400 border-t border-b border-gray-100 py-4">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-400 border-t border-b border-gray-100 py-4">
             <span className="flex items-center gap-1.5"><User size={14} /> {post.author}</span>
             <span className="flex items-center gap-1.5"><Calendar size={14} /> {post.publishedAt}</span>
             <span className="flex items-center gap-1.5"><Clock size={14} /> {post.readTime} de lecture</span>

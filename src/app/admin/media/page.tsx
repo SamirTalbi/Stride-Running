@@ -124,7 +124,7 @@ export default function MediaPage() {
   return (
     <div className="p-4 md:p-8 min-h-full">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="text-2xl font-black text-gray-900">Media Library</h1>
           <p className="text-gray-500 text-sm mt-0.5">{assets.length} assets loaded</p>
@@ -165,8 +165,8 @@ export default function MediaPage() {
       )}
 
       {/* Filters */}
-      <div className="flex gap-3 mb-5">
-        <div className="relative flex-1 max-w-xs">
+      <div className="flex flex-wrap gap-3 mb-5">
+        <div className="relative flex-1 min-w-[180px] max-w-xs">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input placeholder="Search assets…" value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -183,9 +183,9 @@ export default function MediaPage() {
         </div>
       </div>
 
-      <div className="flex gap-6">
+      <div className="flex flex-col-reverse lg:flex-row gap-6">
         {/* Grid */}
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           {loading ? (
             <div className="flex items-center justify-center py-20">
               <Loader2 size={24} className="animate-spin text-brand-500" />
@@ -237,8 +237,8 @@ export default function MediaPage() {
 
         {/* Detail panel */}
         {selected && (
-          <div className="w-64 flex-shrink-0">
-            <div className="bg-white rounded-2xl shadow-card p-4 sticky top-6">
+          <div className="w-full lg:w-64 flex-shrink-0">
+            <div className="bg-white rounded-2xl shadow-card p-4 lg:sticky lg:top-6">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">Details</span>
                 <button onClick={() => setSelected(null)} className="text-gray-400 hover:text-gray-600">

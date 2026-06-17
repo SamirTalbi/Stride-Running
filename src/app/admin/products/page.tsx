@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Plus, Search, Edit2, Trash2, X, Save, Loader2, Upload, Star } from "lucide-react";
-import { formatPrice } from "@/lib/utils";
+import { Plus, Search, Edit2, Trash2, X, Save, Loader2, Upload, Star, ArrowUp, ArrowDown, Tag } from "lucide-react";
+import { formatPrice, getDiscountPercent } from "@/lib/utils";
 import Image from "next/image";
 
 type ProductImage = { url: string; isPrimary: boolean; sortOrder: number; color?: string };
@@ -21,7 +21,7 @@ type Product = {
   description: string | null;
   brand: { name: string } | null;
   images: { url: string; isPrimary: boolean }[];
-  variants: { price: number; stock: number }[];
+  variants: { price: number; comparePrice?: number | null; stock: number }[];
   categories: { category: { name: string } }[];
 };
 
@@ -29,6 +29,7 @@ type VariantRow = {
   size: string;
   color: string;
   price: string;
+  comparePrice: string;
   stock: string;
 };
 
@@ -64,7 +65,7 @@ const emptyForm = {
   isActive: true,
 };
 
-const emptyVariant: VariantRow = { size: "", color: "", price: "", stock: "" };
+const emptyVariant: VariantRow = { size: "", color: "", price: "", comparePrice: "", stock: "" };
 
 export default function AdminProducts() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -78,6 +79,9 @@ export default function AdminProducts() {
   const [uploadingIdx, setUploadingIdx] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [promoProduct, setPromoProduct] = useState<Product | null>(null);
+  const [promoPercent, setPromoPercent] = useState("");
+  const [promoSaving, setPromoSaving] = useState(false);
   const [brands, setBrands] = useState<{ id: string; name: string }[]>([]);
   const [categories, setCategories] = useState<{ id: string; name: string; parent: { name: string } | null }[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -145,10 +149,11 @@ export default function AdminProducts() {
       }))
     );
     setVariants(
-      (p.variants ?? []).map((v: { size?: string; color?: string; price: number; stock: number }) => ({
+      (p.variants ?? []).map((v: { size?: string; color?: string; price: number; comparePrice?: number | null; stock: number }) => ({
         size: v.size ?? "",
         color: v.color ?? "",
         price: v.price?.toString() ?? "",
+        comparePrice: v.comparePrice != null ? v.comparePrice.toString() : "",
         stock: v.stock?.toString() ?? "",
       }))
     );
@@ -193,6 +198,17 @@ export default function AdminProducts() {
 
   function setPrimary(idx: number) {
     setImages((prev) => prev.map((img, i) => ({ ...img, isPrimary: i === idx })));
+  }
+
+  // Réordonne l'image (sans toucher à la photo principale) et recalcule sortOrder
+  function moveImage(idx: number, dir: -1 | 1) {
+    setImages((prev) => {
+      const target = idx + dir;
+      if (target < 0 || target >= prev.length) return prev;
+      const next = [...prev];
+      [next[idx], next[target]] = [next[target], next[idx]];
+      return next.map((img, i) => ({ ...img, sortOrder: i }));
+    });
   }
 
   function removeImage(idx: number) {
@@ -240,6 +256,7 @@ export default function AdminProducts() {
           size: v.size || "ONE SIZE",
           color: v.color || "Default",
           price: parseFloat(v.price) || 0,
+          comparePrice: v.comparePrice ? parseFloat(v.comparePrice) : null,
           stock: parseInt(v.stock) || 0,
           isActive: true,
         })),
@@ -257,6 +274,40 @@ export default function AdminProducts() {
       fetchProducts();
     } finally {
       setSaving(false);
+    }
+  }
+
+  // % de promo en cours sur un produit (déduit de comparePrice de la 1re variante remisée)
+  function productPromo(product: Product): number {
+    const v = product.variants.find((x) => x.comparePrice && x.comparePrice > x.price);
+    return v && v.comparePrice ? getDiscountPercent(v.price, v.comparePrice) : 0;
+  }
+
+  function openPromo(product: Product) {
+    const current = productPromo(product);
+    setPromoPercent(current ? String(current) : "");
+    setPromoProduct(product);
+  }
+
+  async function applyPromo(percent: number) {
+    if (!promoProduct) return;
+    setPromoSaving(true);
+    try {
+      const res = await fetch(`/api/admin/products/${promoProduct.id}/promotion`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ percent }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        alert(`Échec promo: ${err.error ?? res.status}`);
+        return;
+      }
+      setPromoProduct(null);
+      setPromoPercent("");
+      fetchProducts();
+    } finally {
+      setPromoSaving(false);
     }
   }
 
@@ -281,7 +332,7 @@ export default function AdminProducts() {
   return (
     <div className="p-4 md:p-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="text-2xl font-black text-gray-900">Products</h1>
           <p className="text-gray-500 text-sm mt-0.5">{total} total products</p>
@@ -333,6 +384,8 @@ export default function AdminProducts() {
               <tbody className="divide-y divide-gray-50">
                 {products.map((product) => {
                   const price = product.variants.length > 0 ? Math.min(...product.variants.map((v) => v.price)) : 0;
+                  const promo = productPromo(product);
+                  const compareMin = product.variants.find((v) => v.comparePrice && v.comparePrice > v.price)?.comparePrice;
                   const stock = product.variants.reduce((s, v) => s + v.stock, 0);
                   const status = !product.isActive ? "Inactive" : stock === 0 ? "Out of Stock" : stock <= 10 ? "Low Stock" : "Active";
                   const image = product.images.find((i) => i.isPrimary)?.url ?? product.images[0]?.url;
@@ -357,7 +410,15 @@ export default function AdminProducts() {
                         <span className="text-xs font-mono text-gray-500 bg-gray-100 px-2 py-1 rounded">{product.sku}</span>
                       </td>
                       <td className="px-5 py-3.5">
-                        <span className="text-sm font-bold text-gray-900">{price > 0 ? formatPrice(price) : "—"}</span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-sm font-bold text-gray-900">{price > 0 ? formatPrice(price) : "—"}</span>
+                          {promo > 0 && compareMin && (
+                            <>
+                              <span className="text-xs text-gray-400 line-through">{formatPrice(compareMin)}</span>
+                              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-red-100 text-red-700">-{promo}%</span>
+                            </>
+                          )}
+                        </div>
                       </td>
                       <td className="px-5 py-3.5">
                         <span className={`text-sm font-semibold ${stock === 0 ? "text-red-500" : stock <= 10 ? "text-amber-600" : "text-gray-900"}`}>
@@ -371,6 +432,13 @@ export default function AdminProducts() {
                       </td>
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => openPromo(product)}
+                            title="Gérer la promotion"
+                            className={`p-1.5 rounded-lg transition-colors ${promo > 0 ? "text-red-500 bg-red-50" : "text-gray-400 hover:text-red-500 hover:bg-red-50"}`}
+                          >
+                            <Tag size={14} />
+                          </button>
                           <button onClick={() => openEdit(product)} className="p-1.5 rounded-lg text-gray-400 hover:text-brand-500 hover:bg-brand-50 transition-colors">
                             <Edit2 size={14} />
                           </button>
@@ -471,16 +539,41 @@ export default function AdminProducts() {
                           )}
                         </div>
 
-                        {/* Actions */}
-                        <div className="flex flex-col gap-1 flex-shrink-0">
+                        {/* Ordre d'affichage (sortOrder) — séparé de la photo principale */}
+                        <div className="flex flex-col items-center flex-shrink-0">
                           <button
+                            type="button"
+                            onClick={() => moveImage(idx, -1)}
+                            disabled={idx === 0}
+                            title="Monter (afficher plus tôt)"
+                            className="p-1 rounded-lg text-gray-400 hover:text-brand-500 hover:bg-brand-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                          >
+                            <ArrowUp size={14} />
+                          </button>
+                          <span className="text-[10px] font-bold text-gray-400 tabular-nums leading-none">{idx + 1}</span>
+                          <button
+                            type="button"
+                            onClick={() => moveImage(idx, 1)}
+                            disabled={idx === images.length - 1}
+                            title="Descendre (afficher plus tard)"
+                            className="p-1 rounded-lg text-gray-400 hover:text-brand-500 hover:bg-brand-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                          >
+                            <ArrowDown size={14} />
+                          </button>
+                        </div>
+
+                        {/* Actions : photo principale ⭐ + suppression */}
+                        <div className="flex flex-col gap-1 flex-shrink-0 border-l border-gray-100 pl-2">
+                          <button
+                            type="button"
                             onClick={() => setPrimary(idx)}
-                            title="Photo principale"
+                            title="Photo principale (vignette catalogue)"
                             className={`p-1.5 rounded-lg transition-colors ${img.isPrimary ? "text-amber-500" : "text-gray-300 hover:text-amber-400 hover:bg-amber-50"}`}
                           >
                             <Star size={14} fill={img.isPrimary ? "currentColor" : "none"} />
                           </button>
                           <button
+                            type="button"
                             onClick={() => removeImage(idx)}
                             title="Supprimer"
                             className="p-1.5 rounded-lg text-gray-300 hover:text-red-500 hover:bg-red-50 transition-colors"
@@ -494,7 +587,7 @@ export default function AdminProducts() {
                 )}
                 {images.length > 0 && (
                   <p className="text-xs text-gray-400 mt-2">
-                    ⭐ Clique l&apos;étoile pour définir la photo principale · Assigne une couleur à chaque image pour qu&apos;elle s&apos;affiche selon la couleur sélectionnée.
+                    ↑/↓ Réordonne les images (la 1ʳᵉ s&apos;affiche en premier dans la galerie de la fiche produit) · ⭐ L&apos;étoile définit la photo principale (vignette du catalogue) · Assigne une couleur à chaque image pour qu&apos;elle s&apos;affiche selon la couleur sélectionnée.
                   </p>
                 )}
               </div>
@@ -804,6 +897,72 @@ export default function AdminProducts() {
             <div className="flex gap-3 justify-end">
               <button onClick={() => setDeleteId(null)} className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg">Cancel</button>
               <button onClick={() => handleDelete(deleteId)} className="px-4 py-2 text-sm font-semibold text-white bg-red-500 hover:bg-red-600 rounded-lg">Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Promotion */}
+      {promoProduct && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="fixed inset-0 bg-black/40" onClick={() => setPromoProduct(null)} />
+          <div className="relative bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl mx-4">
+            <div className="flex items-center gap-2 mb-1">
+              <Tag size={18} className="text-red-500" />
+              <h3 className="font-bold text-gray-900">Promotion</h3>
+            </div>
+            <p className="text-sm text-gray-500 mb-4 truncate">{promoProduct.name}</p>
+
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Réduction (%)</label>
+            <div className="flex items-center gap-2 mb-3">
+              <input
+                type="number"
+                min={0}
+                max={95}
+                value={promoPercent}
+                onChange={(e) => setPromoPercent(e.target.value)}
+                placeholder="ex : 20"
+                className="w-full h-10 px-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+              />
+              <span className="text-gray-400 font-semibold">%</span>
+            </div>
+
+            {/* Raccourcis */}
+            <div className="flex flex-wrap gap-1.5 mb-5">
+              {[10, 20, 30, 40, 50].map((v) => (
+                <button
+                  key={v}
+                  onClick={() => setPromoPercent(String(v))}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors ${
+                    promoPercent === String(v) ? "border-brand-500 bg-brand-50 text-brand-600" : "border-gray-200 text-gray-600 hover:border-brand-300"
+                  }`}
+                >
+                  -{v}%
+                </button>
+              ))}
+            </div>
+
+            <div className="flex items-center justify-between gap-3">
+              <button
+                onClick={() => applyPromo(0)}
+                disabled={promoSaving || productPromo(promoProduct) === 0}
+                className="text-sm font-semibold text-gray-500 hover:text-red-500 disabled:opacity-40 transition-colors"
+              >
+                Retirer la promo
+              </button>
+              <div className="flex gap-2">
+                <button onClick={() => setPromoProduct(null)} className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg">
+                  Annuler
+                </button>
+                <button
+                  onClick={() => applyPromo(Math.round(Number(promoPercent) || 0))}
+                  disabled={promoSaving || !promoPercent || Number(promoPercent) <= 0}
+                  className="flex items-center gap-2 px-5 py-2 bg-brand-500 text-white text-sm font-semibold rounded-lg hover:bg-brand-600 transition-colors disabled:opacity-50"
+                >
+                  {promoSaving ? <Loader2 size={14} className="animate-spin" /> : <Tag size={14} />}
+                  Appliquer
+                </button>
+              </div>
             </div>
           </div>
         </div>

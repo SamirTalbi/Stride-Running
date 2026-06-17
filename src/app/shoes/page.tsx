@@ -30,7 +30,12 @@ async function getAllShoes() {
   });
 }
 
-export default async function ShoesPage() {
+export default async function ShoesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ cat?: string }>;
+}) {
+  const { cat } = await searchParams;
   const products = await getAllShoes();
 
   return (
@@ -38,14 +43,18 @@ export default async function ShoesPage() {
       <div className="bg-dark-DEFAULT text-white py-12 px-4 lg:px-8">
         <div className="max-w-[1440px] mx-auto">
           <p className="text-sm text-brand-400 font-semibold uppercase tracking-widest mb-2">Shop</p>
-          <h1 className="font-display font-black text-5xl text-white">Toutes les Chaussures</h1>
+          <h1 className="font-display font-black text-4xl sm:text-5xl text-white">Toutes les Chaussures</h1>
           <p className="text-gray-400 mt-2 max-w-lg">
             Route, trail, racing et débutant — trouvez la paire parfaite parmi toutes nos chaussures.
           </p>
         </div>
       </div>
-      {/* @ts-expect-error Prisma type vs Product type */}
-      <ProductGrid products={products} showFilters={true} />
+      <ProductGrid
+        key={cat ?? "all"}
+        products={products as unknown as any[]}
+        showFilters={true}
+        initialFilters={cat ? { category: [cat] } : undefined}
+      />
     </>
   );
 }

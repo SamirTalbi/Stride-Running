@@ -68,7 +68,7 @@ export default function AdminSettings() {
 
   return (
     <div className="p-4 md:p-8 max-w-3xl">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
         <div>
           <h1 className="text-2xl font-black text-gray-900">Settings</h1>
           <p className="text-gray-500 text-sm mt-0.5">Configure your store preferences</p>
@@ -90,8 +90,8 @@ export default function AdminSettings() {
             <Store size={18} className="text-brand-500" />
             <h2 className="font-bold text-gray-900">Store Information</h2>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="col-span-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="sm:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1">Store Name</label>
               <input
                 value={store.name}
@@ -150,7 +150,7 @@ export default function AdminSettings() {
             <Truck size={18} className="text-brand-500" />
             <h2 className="font-bold text-gray-900">Shipping</h2>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Free Shipping Threshold ($)</label>
               <input
@@ -192,7 +192,7 @@ export default function AdminSettings() {
 
         {/* SMTP */}
         <div className="bg-white rounded-2xl shadow-card p-6">
-          <div className="flex items-center justify-between mb-5">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-5">
             <div className="flex items-center gap-2">
               <Server size={18} className="text-brand-500" />
               <h2 className="font-bold text-gray-900">Configuration SMTP</h2>
@@ -215,8 +215,8 @@ export default function AdminSettings() {
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="col-span-2 sm:col-span-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Serveur SMTP (host)</label>
               <input
                 value={smtp.host}
@@ -281,7 +281,7 @@ export default function AdminSettings() {
                 className="w-full h-10 px-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
               />
             </div>
-            <div className="col-span-2">
+            <div className="sm:col-span-2">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"

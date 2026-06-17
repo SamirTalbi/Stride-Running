@@ -271,7 +271,7 @@ export default function AdminImportPage() {
                     )}
                     <button
                       onClick={(e) => { e.stopPropagation(); removeImage(idx); }}
-                      className="absolute top-1 right-1 p-1 bg-white/90 rounded-md opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-50 hover:text-red-500"
+                      className="absolute top-1 right-1 p-1 bg-white/90 rounded-md opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity hover:bg-red-50 hover:text-red-500"
                     >
                       <X size={12} />
                     </button>
@@ -292,7 +292,7 @@ export default function AdminImportPage() {
                 className="w-full h-10 px-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
               />
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Slug *</label>
                 <input
@@ -319,7 +319,7 @@ export default function AdminImportPage() {
                 className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none"
               />
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Brand</label>
                 <select
@@ -352,7 +352,7 @@ export default function AdminImportPage() {
           {/* Variants config */}
           <div className="bg-white rounded-2xl shadow-card p-5 space-y-4">
             <h2 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Variants</h2>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
                 <select value={gender} onChange={(e) => setGender(e.target.value)} className="w-full h-10 px-3 border border-gray-200 rounded-lg text-sm">

@@ -64,7 +64,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="p-4 md:p-8">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
         <div>
           <h1 className="text-2xl font-black text-gray-900">Dashboard</h1>
           <p className="text-gray-500 text-sm mt-0.5">Welcome back. Here&apos;s what&apos;s happening.</p>

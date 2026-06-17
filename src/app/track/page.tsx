@@ -165,7 +165,7 @@ function TrackContent() {
             {order.status === "SHIPPED" && order.trackingNumber && (
               <div className="bg-white rounded-2xl shadow-card p-6">
                 <h2 className="font-bold text-gray-900 mb-4 text-sm">Suivi transporteur</h2>
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                <div className="flex flex-wrap items-center justify-between gap-3 p-4 bg-gray-50 rounded-xl">
                   <div>
                     <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">
                       {carrier?.name ?? order.carrier}

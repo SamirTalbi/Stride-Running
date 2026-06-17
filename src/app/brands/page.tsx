@@ -3,6 +3,8 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic"; // prix/promos toujours à jour
+
 export const metadata: Metadata = {
   title: "Marques de Chaussures Running",
   description: "Toutes les marques de running : Nike, Brooks, HOKA, Asics, New Balance, Saucony, Salomon et plus encore.",

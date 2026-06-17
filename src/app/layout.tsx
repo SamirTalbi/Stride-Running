@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { ChatWidget } from "@/components/support/ChatWidget";
+import { CookieConsent } from "@/components/layout/CookieConsent";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"),
@@ -41,6 +42,7 @@ export const metadata: Metadata = {
     title: "Stride Running",
     description: "Chaussures et équipement de running premium pour chaque coureur.",
     creator: "@stride_running",
+    images: ["/og-image.jpg"],
   },
   robots: {
     index: true,
@@ -75,7 +77,7 @@ export default function RootLayout({
               name: "Stride Running",
               description: "Chaussures, vêtements et accessoires de running premium",
               url: process.env.NEXT_PUBLIC_APP_URL,
-              logo: `${process.env.NEXT_PUBLIC_APP_URL}/logo.png`,
+              logo: `${process.env.NEXT_PUBLIC_APP_URL}/logo-square.png`,
               sameAs: [
                 "https://instagram.com/stride_running",
                 "https://twitter.com/stride_running",
@@ -122,6 +124,7 @@ export default function RootLayout({
           <Footer />
           <CartDrawer />
           <ChatWidget />
+          <CookieConsent />
         </ClerkProvider>
       </body>
     </html>

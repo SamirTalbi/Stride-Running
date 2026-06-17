@@ -60,7 +60,7 @@ export default function WishlistPage() {
                 <button
                   onClick={() => removeItem(product.id)}
                   className="absolute top-2 right-2 z-10 p-1.5 bg-white rounded-full shadow text-gray-400
-                             hover:text-red-500 hover:shadow-md transition-all opacity-0 group-hover:opacity-100"
+                             hover:text-red-500 hover:shadow-md transition-all opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
                   title="Retirer de la liste de souhaits"
                 >
                   <Trash2 size={14} />

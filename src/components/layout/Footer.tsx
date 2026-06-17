@@ -5,7 +5,7 @@ const footerLinks = {
   Boutique: [
     { label: "Chaussures Homme", href: "/men" },
     { label: "Chaussures Femme", href: "/women" },
-    { label: "Trail", href: "/shoes" },
+    { label: "Toutes les chaussures", href: "/shoes" },
     { label: "Vêtements", href: "/apparel" },
     { label: "Accessoires", href: "/accessories" },
     { label: "Nouveautés", href: "/new-arrivals" },
@@ -16,8 +16,8 @@ const footerLinks = {
     { label: "Toutes les marques", href: "/brands" },
     { label: "Nike", href: "/brands/nike" },
     { label: "Adidas", href: "/brands/adidas" },
-    { label: "Brooks", href: "/brands/brooks" },
-    { label: "HOKA", href: "/brands/hoka" },
+    { label: "On Running", href: "/brands/on" },
+    { label: "Salomon", href: "/brands/salomon" },
     { label: "Asics", href: "/brands/asics" },
     { label: "New Balance", href: "/brands/new-balance" },
     { label: "Saucony", href: "/brands/saucony" },
@@ -119,6 +119,25 @@ export function Footer() {
         </div>
       </div>
 
+      {/* Legal links */}
+      <div className="border-t border-dark-100">
+        <div className="max-w-[1440px] mx-auto px-1 lg:px-2 py-4">
+          <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+            {[
+              { label: "Mentions légales", href: "/mentions-legales" },
+              { label: "CGV", href: "/cgv" },
+              { label: "Confidentialité", href: "/confidentialite" },
+              { label: "Cookies", href: "/cookies" },
+              { label: "FAQ & Aide", href: "/faq" },
+            ].map((l) => (
+              <Link key={l.href} href={l.href} className="text-xs text-gray-400 hover:text-white transition-colors">
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      </div>
+
       {/* Bottom bar */}
       <div className="border-t border-dark-100">
         <div className="max-w-[1440px] mx-auto px-1 lg:px-2 py-6">
@@ -128,7 +147,7 @@ export function Footer() {
             </p>
 
             {/* Payment icons */}
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center justify-center gap-2">
               {["Visa", "MC", "Amex", "PayPal", "Apple Pay", "Google Pay"].map((p) => (
                 <div
                   key={p}
@@ -139,10 +158,6 @@ export function Footer() {
                 </div>
               ))}
             </div>
-
-            <Link href="/faq" className="text-sm text-gray-500 hover:text-white transition-colors">
-              FAQ & Aide
-            </Link>
           </div>
         </div>
       </div>

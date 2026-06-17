@@ -20,9 +20,11 @@ interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
   items: NavItem[];
+  onOpenSearch?: () => void;
+  onOpenCart?: () => void;
 }
 
-export function MobileMenu({ isOpen, onClose, items }: MobileMenuProps) {
+export function MobileMenu({ isOpen, onClose, items, onOpenSearch, onOpenCart }: MobileMenuProps) {
   const [openSection, setOpenSection] = useState<string | null>(null);
 
   // Prevent scroll when open
@@ -79,11 +81,17 @@ export function MobileMenu({ isOpen, onClose, items }: MobileMenuProps) {
 
         {/* Quick actions */}
         <div className="flex items-center gap-1 px-4 py-3 border-b border-gray-100">
+          <button
+            onClick={() => { onClose(); onOpenSearch?.(); }}
+            className="flex-1 flex flex-col items-center gap-1 py-2 rounded-xl hover:bg-gray-50
+                       text-gray-600 hover:text-brand-500 transition-colors"
+          >
+            <Search size={18} />
+            <span className="text-[10px] font-medium">Recherche</span>
+          </button>
           {[
-            { icon: Search, label: "Recherche", href: "/search" },
             { icon: User, label: "Compte", href: "/account" },
             { icon: Heart, label: "Favoris", href: "/account/wishlist" },
-            { icon: ShoppingBag, label: "Panier", href: "/cart" },
           ].map(({ icon: Icon, label, href }) => (
             <Link
               key={href}
@@ -96,6 +104,14 @@ export function MobileMenu({ isOpen, onClose, items }: MobileMenuProps) {
               <span className="text-[10px] font-medium">{label}</span>
             </Link>
           ))}
+          <button
+            onClick={() => { onClose(); onOpenCart?.(); }}
+            className="flex-1 flex flex-col items-center gap-1 py-2 rounded-xl hover:bg-gray-50
+                       text-gray-600 hover:text-brand-500 transition-colors"
+          >
+            <ShoppingBag size={18} />
+            <span className="text-[10px] font-medium">Panier</span>
+          </button>
         </div>
 
         {/* Navigation */}
@@ -202,7 +218,7 @@ export function MobileMenu({ isOpen, onClose, items }: MobileMenuProps) {
               <HelpCircle size={13} /> Aide
             </Link>
             <Link
-              href="/contact"
+              href="/support"
               onClick={onClose}
               className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-700"
             >

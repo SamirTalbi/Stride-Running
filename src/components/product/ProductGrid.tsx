@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { ProductCard } from "./ProductCard";
 import { ProductFiltersPanel } from "./ProductFilters";
 import { ProductCardSkeleton } from "@/components/ui/Skeleton";
@@ -9,11 +9,33 @@ import type { Product, ProductFilters, SortOption } from "@/types";
 import { LayoutGrid, List, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+// Relit les filtres depuis l'URL (?cat=a,b&brand=…&sort=…) pour les restaurer
+// après un retour arrière depuis une fiche produit.
+function parseFiltersFromSearch(search: string): { filters: ProductFilters; sort?: SortOption } {
+  const p = new URLSearchParams(search);
+  const list = (k: string) => p.get(k)?.split(",").filter(Boolean);
+  const f: ProductFilters = {};
+  const cat = list("cat");
+  if (cat?.length) f.category = cat;
+  const brand = list("brand");
+  if (brand?.length) f.brand = brand;
+  const color = list("color");
+  if (color?.length) f.color = color;
+  const size = list("size");
+  if (size?.length) f.size = size;
+  if (p.get("pmin")) f.priceMin = Number(p.get("pmin"));
+  if (p.get("pmax")) f.priceMax = Number(p.get("pmax"));
+  if (p.get("stock") === "1") f.inStock = true;
+  const sort = p.get("sort");
+  return { filters: f, sort: (sort as SortOption) ?? undefined };
+}
+
 interface ProductGridProps {
   products: Product[];
   loading?: boolean;
   title?: string;
   showFilters?: boolean;
+  initialFilters?: ProductFilters;
   hidePriceFilter?: boolean;
   hideSizeFilter?: boolean;
   hideBrandFilter?: boolean;
@@ -25,14 +47,44 @@ export function ProductGrid({
   loading = false,
   title,
   showFilters = true,
+  initialFilters,
   hidePriceFilter = false,
   hideSizeFilter = false,
   hideBrandFilter = false,
   hideColorFilter = false
 }: ProductGridProps) {
-  const [filters, setFilters] = useState<ProductFilters>({});
+  const [filters, setFilters] = useState<ProductFilters>(initialFilters ?? {});
   const [sortBy, setSortBy] = useState<SortOption>("best-sellers");
   const [view, setView] = useState<"grid" | "list">("grid");
+  const skipFirstUrlSync = useRef(true);
+
+  // Au montage : restaure les filtres présents dans l'URL (retour arrière, lien partagé)
+  useEffect(() => {
+    const { filters: urlFilters, sort } = parseFiltersFromSearch(window.location.search);
+    if (Object.keys(urlFilters).length > 0) setFilters(urlFilters);
+    if (sort) setSortBy(sort);
+  }, []);
+
+  // À chaque changement de filtre/tri : reflète l'état dans l'URL (sans rechargement)
+  // pour que le bouton retour du navigateur retrouve la liste filtrée.
+  useEffect(() => {
+    if (skipFirstUrlSync.current) {
+      skipFirstUrlSync.current = false;
+      return;
+    }
+    const p = new URLSearchParams(window.location.search);
+    const setOrDel = (k: string, v?: string) => (v ? p.set(k, v) : p.delete(k));
+    setOrDel("cat", filters.category?.join(","));
+    setOrDel("brand", filters.brand?.join(","));
+    setOrDel("color", filters.color?.join(","));
+    setOrDel("size", filters.size?.join(","));
+    setOrDel("pmin", filters.priceMin !== undefined ? String(filters.priceMin) : undefined);
+    setOrDel("pmax", filters.priceMax !== undefined ? String(filters.priceMax) : undefined);
+    setOrDel("stock", filters.inStock ? "1" : undefined);
+    setOrDel("sort", sortBy !== "best-sellers" ? sortBy : undefined);
+    const qs = p.toString();
+    window.history.replaceState(null, "", window.location.pathname + (qs ? `?${qs}` : ""));
+  }, [filters, sortBy]);
 
   // Derive available filter options from actual products
   const availableBrands = useMemo(() => {
@@ -108,7 +160,7 @@ export function ProductGrid({
         <h1 className="font-display font-black text-display-md text-gray-900 mb-6">{title}</h1>
       )}
 
-      <div className="flex gap-8">
+      <div className="flex flex-col lg:flex-row lg:gap-8">
         {showFilters && (
           <ProductFiltersPanel
             filters={filters}

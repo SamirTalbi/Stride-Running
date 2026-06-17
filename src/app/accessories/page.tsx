@@ -5,6 +5,8 @@ import { ArrowRight } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { formatPrice } from "@/lib/utils";
 
+export const dynamic = "force-dynamic"; // prix/promos toujours à jour
+
 export const metadata: Metadata = {
   title: "Accessoires Running — Casquettes & Sacoches",
   description: "Découvrez notre sélection d'accessoires de running indispensables. Retrouvez nos casquettes et sacoches de haute performance pour vos sorties.",
@@ -50,43 +52,33 @@ export default async function AccessoriesPage() {
 
   const { categories: dbCategories } = data;
 
-  // We always want to show these two, prioritized and translated
-  const forceCategories = [
-    { 
-      id: "force-caps",
-      name: "Casquettes", 
-      slug: "caps", 
-      description: "Casquettes de performance pour vous protéger du soleil.",
-      imageUrl: null as string | null,
-      products: [] as any[]
-    },
-    { 
-      id: "force-bags",
-      name: "Sacoches", 
-      slug: "running-belts", 
-      description: "Ceintures et sacoches de running pour transporter vos essentiels.",
-      imageUrl: null as string | null,
-      products: [] as any[]
-    }
-  ];
+  // Noms/descriptions FR par slug (matching exact — pas de correspondance floue).
+  const FR: Record<string, { name: string; description: string }> = {
+    caps: { name: "Casquettes", description: "Casquettes de running et lifestyle." },
+    "running-socks": { name: "Chaussettes", description: "Chaussettes de running — Nike, Jordan, On." },
+    "running-belts": { name: "Sacoches", description: "Ceintures et sacoches pour transporter vos essentiels." },
+    "gps-watches": { name: "Montres GPS", description: "Montres GPS et cardio pour le running." },
+    headphones: { name: "Écouteurs", description: "Écouteurs sport sans fil." },
+    "hydration-vests": { name: "Sacs d'hydratation", description: "Gilets et sacs d'hydratation pour le trail." },
+    insoles: { name: "Semelles", description: "Semelles de confort et de performance." },
+  };
 
-  // Merge with DB data if found
-  const categories = forceCategories.map(force => {
-    const dbMatch = dbCategories.find(c => 
-      c.slug === force.slug || 
-      c.slug.includes(force.slug.split("-")[0]) ||
-      c.name.toLowerCase().includes(force.name.toLowerCase().slice(0, -1))
-    );
-    
-    if (dbMatch) {
-      return {
-        ...dbMatch,
-        name: force.name, // Force French name
-        description: force.description // Force French desc
-      };
-    }
-    return force;
-  });
+  // Catégories toujours mises en avant (même vides), dans cet ordre.
+  const PRIORITY = ["caps", "running-socks", "running-belts"];
+
+  // On affiche les catégories qui ont des produits + les prioritaires, triées par priorité.
+  const categories = dbCategories
+    .filter((c) => c.products.length > 0 || PRIORITY.includes(c.slug))
+    .sort((a, b) => {
+      const ia = PRIORITY.indexOf(a.slug);
+      const ib = PRIORITY.indexOf(b.slug);
+      return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+    })
+    .map((c) => ({
+      ...c,
+      name: FR[c.slug]?.name ?? c.name,
+      description: FR[c.slug]?.description ?? c.description,
+    }));
 
   return (
     <div className="max-w-[1440px] mx-auto px-4 lg:px-8 py-12">

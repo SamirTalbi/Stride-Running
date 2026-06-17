@@ -169,7 +169,7 @@ export default function AccountPage() {
                     return (
                       <div key={order.id} className="bg-white border border-gray-100 rounded-2xl p-5 shadow-card
                                                       hover:shadow-card-hover transition-shadow">
-                        <div className="flex items-center justify-between mb-4">
+                        <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                           <div>
                             <p className="text-xs text-gray-500 font-medium">Commande #{order.orderNumber}</p>
                             <p className="text-xs text-gray-400 mt-0.5">{formatDate(order.createdAt)}</p>

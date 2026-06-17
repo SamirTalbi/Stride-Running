@@ -61,7 +61,7 @@ export default function AboutPage() {
             </div>
             <span className="font-display font-black text-2xl text-white">STRIDE</span>
           </div>
-          <h1 className="font-display font-black text-5xl lg:text-6xl text-white mb-6 leading-tight">
+          <h1 className="font-display font-black text-4xl sm:text-5xl lg:text-6xl text-white mb-6 leading-tight">
             Nés pour courir.<br />
             <span className="text-brand-400">Fait pour les coureurs.</span>
           </h1>

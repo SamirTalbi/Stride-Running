@@ -11,8 +11,8 @@ export default function BestSellersTabs({ products }: { products: Product[] }) {
 
   const filtered = products.filter((p) => {
     if (activeTab === "Tous") return true;
-    if (activeTab === "Homme") return p.gender === "MEN";
-    if (activeTab === "Femme") return p.gender === "WOMEN";
+    if (activeTab === "Homme") return p.gender === "MEN" || p.gender === "UNISEX";
+    if (activeTab === "Femme") return p.gender === "WOMEN" || p.gender === "UNISEX";
     if (activeTab === "Trail") return p.terrain === "TRAIL";
     if (activeTab === "Nouveautés") return p.isNewArrival;
     return true;

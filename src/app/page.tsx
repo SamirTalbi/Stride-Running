@@ -10,6 +10,8 @@ import { ReviewsSection } from "@/components/home/ReviewsSection";
 import { BrandsStrip } from "@/components/home/BrandsStrip";
 import { Newsletter } from "@/components/home/Newsletter";
 
+export const dynamic = "force-dynamic"; // prix/promos toujours à jour
+
 export const metadata: Metadata = {
   title: "Stride Running | #1 Boutique de Chaussures & Équipement de Running En Ligne",
   description:

@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ChevronRight, RotateCcw, CheckCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import type { ShoeFinderAnswers } from "@/types";
 
 const steps = [
@@ -48,37 +48,44 @@ const steps = [
   },
 ];
 
-const recommendations = [
-  {
-    name: "Nike Air Zoom Pegasus 40",
-    price: 130,
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&h=200&fit=crop",
-    href: "/products/nike-air-zoom-pegasus-40",
-    match: 98,
-    tag: "Meilleur Choix",
-  },
-  {
-    name: "Brooks Ghost 15",
-    price: 140,
-    image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=200&h=200&fit=crop",
-    href: "/products/brooks-ghost-15",
-    match: 95,
-    tag: "Excellent Choix",
-  },
-  {
-    name: "HOKA Clifton 9",
-    price: 145,
-    image: "https://images.unsplash.com/photo-1539185441755-769473a23570?w=200&h=200&fit=crop",
-    href: "/products/hoka-clifton-9",
-    match: 91,
-    tag: "À Considérer",
-  },
-];
+interface Recommendation {
+  name: string;
+  price: number;
+  image: string | null;
+  href: string;
+  match: number;
+  tag: string;
+}
+
+const MATCH_SCORES = [98, 95, 91];
+const MATCH_TAGS = ["Meilleur Choix", "Excellent Choix", "À Considérer"];
 
 export function ShoeFinder() {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<ShoeFinderAnswers>({});
   const [showResults, setShowResults] = useState(false);
+  const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
+
+  // Charge de vraies recommandations (meilleures ventes) quand le quiz est terminé
+  useEffect(() => {
+    if (!showResults || recommendations.length > 0) return;
+    fetch("/api/products/suggestions")
+      .then((r) => r.json())
+      .then((data) => {
+        if (!Array.isArray(data)) return;
+        setRecommendations(
+          data.slice(0, 3).map((p, i) => ({
+            name: p.name,
+            price: p.variants?.[0]?.price ?? 0,
+            image: p.images?.[0]?.url ?? null,
+            href: `/products/${p.slug}`,
+            match: MATCH_SCORES[i] ?? 90,
+            tag: MATCH_TAGS[i] ?? "À Considérer",
+          }))
+        );
+      })
+      .catch(() => {});
+  }, [showResults, recommendations.length]);
 
   const step = steps[currentStep];
   const progress = ((currentStep) / steps.length) * 100;
@@ -151,7 +158,7 @@ export function ShoeFinder() {
 
                 <div className={cn(
                   "grid gap-3",
-                  step.options.length === 4 ? "grid-cols-2" : "grid-cols-3"
+                  step.options.length === 4 ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1 sm:grid-cols-3"
                 )}>
                   {step.options.map((option) => {
                     const isSelected = answers[step.key] === option.value;
@@ -212,13 +219,18 @@ export function ShoeFinder() {
                   >
                     <div className="relative flex-shrink-0">
                       <div className="w-16 h-16 bg-dark-300 rounded-xl overflow-hidden">
-                        <Image
-                          src={rec.image}
-                          alt={rec.name}
-                          width={64}
-                          height={64}
-                          className="w-full h-full object-cover"
-                        />
+                        {rec.image ? (
+                          <Image
+                            src={rec.image}
+                            alt={rec.name}
+                            width={64}
+                            height={64}
+                            unoptimized
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full" />
+                        )}
                       </div>
                       {i === 0 && (
                         <div className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-brand-500 rounded-full
@@ -239,7 +251,7 @@ export function ShoeFinder() {
                         <span className="text-[10px] text-gray-500">{rec.match}% de match</span>
                       </div>
                       <p className="text-sm font-bold text-white truncate">{rec.name}</p>
-                      <p className="text-sm text-brand-400 font-semibold">${rec.price}</p>
+                      <p className="text-sm text-brand-400 font-semibold">{formatPrice(rec.price)}</p>
                     </div>
 
                     <ChevronRight size={16} className="text-gray-600 group-hover:text-brand-400 transition-colors" />

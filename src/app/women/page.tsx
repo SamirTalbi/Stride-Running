@@ -24,7 +24,12 @@ async function getWomenProducts() {
   });
 }
 
-export default async function WomenPage() {
+export default async function WomenPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ cat?: string }>;
+}) {
+  const { cat } = await searchParams;
   const products = await getWomenProducts();
 
   return (
@@ -32,15 +37,17 @@ export default async function WomenPage() {
       <div className="bg-gradient-to-r from-purple-900 to-dark-DEFAULT text-white py-12 px-4 lg:px-8">
         <div className="max-w-[1440px] mx-auto">
           <p className="text-sm text-purple-300 font-semibold uppercase tracking-widest mb-2">Collection Femme</p>
-          <h1 className="font-display font-black text-5xl text-white">Femme</h1>
+          <h1 className="font-display font-black text-4xl sm:text-5xl text-white">Femme</h1>
           <p className="text-white/60 mt-2 max-w-lg">
             Chaussures, ensembles, leggings & accessoires. La sélection complète pour entraînement, course et lifestyle.
           </p>
         </div>
       </div>
       <ProductGrid
+        key={cat ?? "all"}
         products={products as unknown as any[]}
         showFilters
+        initialFilters={cat ? { category: [cat] } : undefined}
         hidePriceFilter
         hideSizeFilter
         hideBrandFilter
