@@ -52,15 +52,15 @@ export default function CheckoutPage() {
   const [paymentError, setPaymentError] = useState("");
 
   const items = useCartStore((s) => s.items);
-  const clearCart = useCartStore((s) => s.clearCart);
   const openCart = useCartStore((s) => s.openCart);
 
   const subtotal = items.reduce((sum, i) => sum + i.variant.price * i.quantity, 0);
   const isFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD || coupon?.type === "FREE_SHIPPING";
   const shippingCost = isFreeShipping ? 0 : SHIPPING_PRICE;
   const discount = coupon?.discountAmount ?? 0;
-  const tax = (subtotal - discount) * 0.20; // TVA 20%
-  const total = subtotal - discount + shippingCost + tax;
+  // Prix TTC (TVA 20% déjà incluse, conforme B2C France) : on ne rajoute pas de taxe par-dessus.
+  const total = subtotal - discount + shippingCost;
+  const taxIncluded = total - total / 1.2; // part de TVA contenue dans le total, à titre informatif
 
   async function applyCoupon() {
     if (!couponCode.trim()) return;
@@ -97,7 +97,7 @@ export default function CheckoutPage() {
     setPaymentLoading(true);
     setPaymentError("");
     try {
-      const res = await fetch("/api/orders", {
+      const res = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -119,23 +119,21 @@ export default function CheckoutPage() {
             country: "FR",
           },
           couponCode: coupon?.code,
-          // Pas de paymentIntentId — paiement simulé pour les tests
         }),
       });
 
       const json = await res.json();
 
-      if (!res.ok) {
+      if (!res.ok || !json.url) {
         setPaymentError(json.error ?? "Une erreur est survenue.");
         return;
       }
 
-      setOrderNumber(json.data.orderNumber);
-      clearCart();
-      setStep("confirmation");
+      // Redirection vers la page de paiement sécurisée Stripe.
+      // Le panier est vidé au retour (page /checkout/success) une fois le paiement confirmé.
+      window.location.href = json.url;
     } catch {
       setPaymentError("Impossible de contacter le serveur.");
-    } finally {
       setPaymentLoading(false);
     }
   };
@@ -246,44 +244,21 @@ export default function CheckoutPage() {
             <div className="space-y-5">
               <h2 className="text-lg font-black text-gray-900">Paiement</h2>
 
-              {/* Express checkout */}
-              <div className="space-y-2">
-                <p className="text-xs text-gray-400 uppercase tracking-widest font-medium text-center">Paiement rapide</p>
-                <div className="grid grid-cols-3 gap-2">
-                  {["Apple Pay", "Google Pay", "PayPal"].map((method) => (
-                    <button
-                      key={method}
-                      className="h-12 bg-black rounded-xl text-white text-sm font-semibold
-                                 hover:bg-gray-900 transition-colors"
-                    >
-                      {method}
-                    </button>
-                  ))}
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="flex-1 h-px bg-gray-200" />
-                  <span className="text-xs text-gray-400 font-medium">ou payer par carte</span>
-                  <div className="flex-1 h-px bg-gray-200" />
-                </div>
-              </div>
-
-              {/* Card form */}
-              <div className="space-y-4 p-5 bg-gray-50 rounded-2xl border border-gray-100">
-                <div className="flex items-center gap-2 mb-3">
+              {/* Paiement sécurisé via Stripe (redirection) */}
+              <div className="p-5 bg-gray-50 rounded-2xl border border-gray-100 space-y-3">
+                <div className="flex items-center gap-2">
                   <CreditCard size={16} className="text-gray-500" />
-                  <span className="text-sm font-semibold text-gray-700">Informations de carte</span>
+                  <span className="text-sm font-semibold text-gray-700">Paiement par carte sécurisé</span>
                 </div>
-                <Input label="Numéro de carte" placeholder="1234 5678 9012 3456" />
-                <div className="grid grid-cols-2 gap-4">
-                  <Input label="Date d'expiration" placeholder="MM / AA" />
-                  <Input label="CVV" placeholder="123" />
+                <p className="text-sm text-gray-500">
+                  En cliquant sur « Payer », vous serez redirigé vers la page de paiement sécurisée
+                  Stripe pour saisir vos informations de carte. Aucune donnée bancaire ne transite
+                  par notre site.
+                </p>
+                <div className="flex items-center gap-2 text-xs text-gray-400">
+                  <Shield size={12} className="text-green-500" />
+                  Paiement chiffré et certifié PCI-DSS par Stripe
                 </div>
-                <Input label="Nom sur la carte" placeholder="Jean Dupont" />
-              </div>
-
-              <div className="flex items-center gap-2 text-xs text-gray-400">
-                <Shield size={12} className="text-green-500" />
-                Vos informations de paiement sont chiffrées et sécurisées
               </div>
 
               {paymentError && (
@@ -438,13 +413,13 @@ export default function CheckoutPage() {
                     {shippingCost === 0 ? "GRATUIT" : formatPrice(shippingCost)}
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500">TVA (estimée)</span>
-                  <span className="font-medium">{formatPrice(tax)}</span>
-                </div>
                 <div className="flex justify-between text-base font-black border-t border-gray-200 pt-3 mt-3">
                   <span>Total</span>
                   <span>{formatPrice(total)}</span>
+                </div>
+                <div className="flex justify-between text-xs text-gray-400">
+                  <span>Dont TVA (20%)</span>
+                  <span>{formatPrice(taxIncluded)}</span>
                 </div>
               </div>
             </div>

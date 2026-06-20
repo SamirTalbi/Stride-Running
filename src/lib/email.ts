@@ -2,7 +2,9 @@ import { Resend } from "resend";
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
-const FROM = "Stride Running <onboarding@resend.dev>";
+// Adresse d'envoi : utiliser un domaine vérifié dans Resend en production
+// (ex. "Stride Running <noreply@ton-domaine.com>"). onboarding@resend.dev = sandbox.
+const FROM = process.env.EMAIL_FROM ?? "Stride Running <onboarding@resend.dev>";
 
 // ─── PO au fournisseur ───────────────────────────────────────────────────────
 export async function sendPurchaseOrderEmail({
