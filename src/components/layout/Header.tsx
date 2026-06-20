@@ -122,7 +122,7 @@ export function Header() {
           scrolled ? "shadow-md" : "shadow-sm"
         )}
       >
-        <div className="max-w-[1440px] mx-auto px-1 lg:px-2">
+        <div className="max-w-[1440px] mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-18">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 flex-shrink-0 group">

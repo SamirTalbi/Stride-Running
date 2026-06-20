@@ -1,0 +1,10 @@
+Under Armour — T-shirt Sport
+Dossier: Tshirt/Under/tshirt_4
+Couleurs: Blanc, Gris, Bleu
+
+#0	微信图片_20260424000830_2363_137.jpg.jpg
+#1	微信图片_20260424000833_2364_137.jpg.jpg
+#2	微信图片_20260424000839_2367_137.jpg.jpg
+#3	微信图片_20260424000841_2368_137.jpg.jpg
+#4	微信图片_20260424000843_2369_137.jpg.jpg
+#5	微信图片_20260424000845_2370_137.jpg.jpg

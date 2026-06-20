@@ -181,7 +181,10 @@
       "PowerShell(npx tsx scripts/_gen_og.ts)",
       "PowerShell(npx tsx scripts/_audit_home.ts)",
       "PowerShell(npx tsx scripts/curate-bestsellers.ts)",
-      "PowerShell(npx tsx scripts/_fix_740_cover.ts)"
+      "PowerShell(npx tsx scripts/_fix_740_cover.ts)",
+      "Bash(npx --yes tsx scripts/prep-color-folders.ts)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" \"http://localhost:3001/products/on-tshirt-performance\")",
+      "Bash(curl -s \"http://localhost:3001/products/on-tshirt-performance\")"
     ]
   }
 }

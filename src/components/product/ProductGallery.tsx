@@ -68,7 +68,7 @@ export function ProductGallery({ images, productName, activeColor }: ProductGall
         </div>
 
         {/* Main image */}
-        <div className="relative flex-1 aspect-square bg-gray-50 rounded-3xl overflow-hidden group cursor-zoom-in"
+        <div className="relative w-full lg:flex-1 aspect-square bg-gray-50 rounded-3xl overflow-hidden group cursor-zoom-in"
           onClick={() => setLightbox(true)}>
           {active && (
             <Image
@@ -77,7 +77,7 @@ export function ProductGallery({ images, productName, activeColor }: ProductGall
               fill
               priority
               className={cn(
-                "object-cover transition-transform duration-500",
+                "object-contain transition-transform duration-500",
                 zoom && "scale-150 cursor-zoom-out"
               )}
               sizes="(max-width: 1024px) 100vw, 55vw"
@@ -170,7 +170,7 @@ export function ProductGallery({ images, productName, activeColor }: ProductGall
                 src={active.url}
                 alt={active.altText ?? productName}
                 fill
-                className="object-cover"
+                className="object-contain"
               />
             </div>
             <p className="text-center text-white/50 text-sm mt-3">

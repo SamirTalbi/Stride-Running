@@ -1,0 +1,8 @@
+Nike — T-shirt Sport
+Dossier: Tshirt/nike/tshirt_5
+Couleurs: Bleu, Vert
+
+#0	微信图片_20260423233454_2169_137.jpg.jpg
+#1	微信图片_20260423233456_2170_137.jpg.jpg
+#2	微信图片_20260423233503_2173_137.jpg.jpg
+#3	微信图片_20260423233505_2174_137.jpg.jpg

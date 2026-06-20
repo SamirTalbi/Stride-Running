@@ -1,0 +1,8 @@
+Under Armour — Short Clair
+Dossier: Short/under/short 1
+Couleurs: Blanc, Bleu Ciel
+
+#0	1.jpg.jpg
+#1	2.jpg.jpg
+#2	3.jpg.jpg
+#3	5.jpg.jpg

@@ -1,0 +1,10 @@
+Under Armour — T-shirt Tech
+Dossier: Tshirt/Under/tshirt_3
+Couleurs: Bleu, Gris, Noir
+
+#0	微信图片_20260424001009_2377_137.jpg.jpg
+#1	微信图片_20260424001011_2378_137.jpg.jpg
+#2	微信图片_20260424001014_2379_137.jpg.jpg
+#3	微信图片_20260424001016_2380_137.jpg.jpg
+#4	微信图片_20260424001017_2381_137.jpg.jpg
+#5	微信图片_20260424001020_2382_137.jpg.jpg

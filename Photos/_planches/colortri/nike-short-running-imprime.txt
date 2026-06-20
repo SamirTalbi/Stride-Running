@@ -1,0 +1,10 @@
+Nike — Short de Running Imprimé
+Dossier: Short/Nike/short 2
+Couleurs: Gris, Noir, Bleu Marine
+
+#0	1.jpg.jpg
+#1	2.jpg.jpg
+#2	6.jpg.jpg
+#3	7.jpg.jpg
+#4	9.jpg.jpg
+#5	10.jpg.jpg

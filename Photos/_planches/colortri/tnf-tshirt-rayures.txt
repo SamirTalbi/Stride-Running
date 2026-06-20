@@ -1,0 +1,8 @@
+The North Face — T-shirt Texturé
+Dossier: Tshirt/the north face/tshirt_2
+Couleurs: Noir, Bleu
+
+#0	84584 (3).jpg
+#1	84584 (4).jpg
+#2	84584 (5).jpg
+#3	84584 (6).jpg

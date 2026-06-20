@@ -68,7 +68,7 @@ export function ProductCard({ product, priority = false, className }: ProductCar
               unoptimized
               priority={priority}
               className={cn(
-                "object-cover transition-all duration-500",
+                "object-contain transition-all duration-500",
                 hovered && hoverImage !== primaryImage ? "opacity-0" : "opacity-100"
               )}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -83,7 +83,7 @@ export function ProductCard({ product, priority = false, className }: ProductCar
               fill
               unoptimized
               className={cn(
-                "object-cover transition-all duration-500",
+                "object-contain transition-all duration-500",
                 hovered ? "opacity-100 scale-105" : "opacity-0 scale-100"
               )}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
